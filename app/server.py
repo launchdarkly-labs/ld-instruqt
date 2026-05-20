@@ -54,14 +54,23 @@ bedrock = boto3.client(
 
 FALLBACK_CONFIG = AICompletionConfigDefault(enabled=False)
 
-# LaunchDarkly's model config registry returns a vendor-neutral name (e.g.
-# "claude-sonnet-4-5"); Bedrock needs the full model or inference-profile ID.
-# When the workshop adds a new model, add a row here.
+# LaunchDarkly's model config registry returns either a vendor-neutral name
+# (e.g. "claude-sonnet-4-5") or the full Bedrock model ID (e.g.
+# "anthropic.claude-sonnet-4-5-20250929-v1:0") depending on how the model
+# config was created. Bedrock needs the US cross-region inference profile ID
+# (with the `us.` prefix) for all of these in us-east-1. When the workshop
+# adds a new model, add rows for both shapes here.
 BEDROCK_MODEL_IDS = {
+    # Vendor-neutral slugs (Terraform-created model_configs).
     "claude-sonnet-4-5": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
     "claude-haiku-4-5":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "claude-haiku-3-5":  "us.anthropic.claude-3-5-haiku-20241022-v1:0",
     "nova-pro":          "us.amazon.nova-pro-v1:0",
+    # Full in-region Bedrock IDs (UI-created model_configs).
+    "anthropic.claude-sonnet-4-5-20250929-v1:0": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "anthropic.claude-haiku-4-5-20251001-v1:0":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "anthropic.claude-3-5-haiku-20241022-v1:0":  "us.anthropic.claude-3-5-haiku-20241022-v1:0",
+    "amazon.nova-pro-v1:0":                       "us.amazon.nova-pro-v1:0",
 }
 
 
