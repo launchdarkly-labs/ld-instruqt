@@ -39,6 +39,7 @@ TURN_LIMIT = int(os.getenv("LD_CHAT_TURN_LIMIT", "30"))
 HISTORY_LIMIT = 20  # last N user/assistant messages per session
 LD_SDK_KEY = os.environ["LD_SDK_KEY"]
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+AWS_PROFILE = os.getenv("AWS_PROFILE", "BedrockProfile")
 
 ld_client = LDClient(LDConfig(LD_SDK_KEY))
 ai_client = LDAIClient(ld_client)
@@ -47,9 +48,7 @@ ai_client = LDAIClient(ld_client)
 bedrock = boto3.client(
     "bedrock-runtime",
     region_name=AWS_REGION,
-    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
-    aws_session_token=os.environ.get("AWS_SESSION_TOKEN"),
+    profile_name=AWS_PROFILE,
 )
 
 FALLBACK_CONFIG = AICompletionConfigDefault(enabled=False)
