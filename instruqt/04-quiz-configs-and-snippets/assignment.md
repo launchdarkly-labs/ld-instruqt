@@ -2,12 +2,13 @@
 slug: quiz-configs-and-snippets
 id: hpdtzu3ytdvn
 type: quiz
-title: Quiz — AI Configs and Snippets
+title: Quiz — AgentControl Configs and Snippets
 teaser: A quick check on what you just built.
 notes:
 - type: text
-  contents: Pause for a moment and consolidate. The next question is about AI Configs,
-    snippets, and what changes when you edit a prompt in the LaunchDarkly UI.
+  contents: Pause for a moment and consolidate. The next question is about AgentControl
+    Configs, Snippets, and what changes when you edit a prompt in the AgentControl
+    UI.
 answers:
 - The Python `launchdarkly-server-sdk-ai` package auto-reloads the server when a prompt
   changes.
@@ -17,7 +18,7 @@ answers:
 - The ToggleWear chat widget caches the prompt in `localStorage` and refreshes hourly.
 solution:
 - 1
-difficulty: basic
+difficulty: ""
 timelimit: 600
 enhanced_loading: null
 ---

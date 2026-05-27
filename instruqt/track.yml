@@ -1,10 +1,10 @@
-slug: ld-ai-configs-intro
+slug: ld-agentcontrol-intro
 id: xl0egbmxaqtv
-title: Introduction to LaunchDarkly AI Configs
+title: Introduction to AgentControl
 teaser: Ship AI features the same way you ship everything else — with control, observability,
   and a safety net.
 description: |-
-  AI Configs let you treat prompts, models, and rollout strategy
+  AgentControl let you treat prompts, models, and rollout strategy
   as runtime configuration instead of code. In this track, you'll
   build a customer-facing AI assistant for the fictional ToggleWear
   storefront, iterate on its prompts and models without redeploying,
@@ -19,8 +19,9 @@ tags:
 owner: launchdarkly
 developers:
 - kcochran@launchdarkly.com
+- sattensil@launchdarkly.com
 show_timer: true
-idle_timeout: 300
+idle_timeout: 1200
 timelimit: 7200
 lab_config:
   extend_ttl: 3600
@@ -34,5 +35,5 @@ lab_config:
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 25
-checksum: "14740883808123949749"
+checksum: "10584127894304889060"
 enhanced_loading: false

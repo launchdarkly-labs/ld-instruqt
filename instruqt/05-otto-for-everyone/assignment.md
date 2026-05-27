@@ -42,9 +42,9 @@ We're going to:
 
 # Add the premium variation
 
-Open the [LaunchDarkly](#tab-0) tab. Go to **AI Configs** → **Otto Assistant**.
+Open the [LaunchDarkly](#tab-0) tab. Go to **AI** → **Configs** → **Otto Assistant**.
 
-1. Click **Add variation**. <!-- VERIFY: location of add-variation control -->
+1. Click **Add variation**.
 2. For **Name**, enter:
 ```text
 Otto v2 (Premium)
@@ -53,20 +53,15 @@ Otto v2 (Premium)
 ```text
 otto-premium
 ```
-4. Under **Model**, pick **Anthropic Claude Sonnet 4.5**. <!-- VERIFY: model picker UX -->
-5. Under **Messages**, add a **system** message with:
+4. Under **Model**, pick **Anthropic** → **claude-sonnet-4-6**.
+5. In prompt text area, make sure **System** is selected, then click **Load snippet** and select **Brand voice**.
+6. Below that, enter the following text:
 
 ```text
-{{ldsnippet.brand-voice}}
-
 You work at ToggleWear and you're talking to a premium customer. Take a little more time with them. Offer thoughtful recommendations, mention complementary items when relevant, and share interesting product details (materials, care, the story behind a design). You can be a bit warmer and more conversational.
-
-{{ldsnippet.safety-rules}}
 ```
-
-<!-- VERIFY: snippet-reference syntax. Same caveat as Challenge 03 — adjust if the UI uses a different token. -->
-
-6. Click **Save**.
+7. Click **Load snippet** and select **Safety rules**.
+8. Click **Review and save**, then **Save changes**.
 
 Note what we just did: the premium prompt **reuses** the `brand-voice` and `safety-rules` snippets from Challenge 03. If marketing tweaks the brand voice tomorrow, both variations pick it up automatically.
 
@@ -74,11 +69,15 @@ Note what we just did: the premium prompt **reuses** the `brand-voice` and `safe
 
 Click the **Targeting** tab. Make sure the environment selector reads **test**.
 
-1. Under **Targeting rules**, click **Add rule**. <!-- VERIFY: rules section label -->
-2. Build the clause: **User** **tier** **is one of** **premium**. <!-- VERIFY: clause builder UX (context kind, attribute, op, values) -->
-3. For the **serve** dropdown, pick **Otto v2 (Premium)**.
-4. Leave the **default rule** (fallthrough) as **Otto v1 (Born)** — free shoppers and anyone without a tier still get the Haiku Otto.
-5. Click **Review and save**. <!-- VERIFY: save button label / confirmation flow -->
+1. Above the **Default rule**, click ** + ** and select **Build a custom rule**.
+2. Build the clause:
+	1. Context kinds: **user**
+	2. Attribute: **tier**
+	3. Operator: **is one of**
+	4. Values: **premium** _&lt;ENTER&gt;_
+3. For the variation dropdown, select **Otto v2 (Premium)**.
+4. Leave the **Default rule** as **Otto v1 (Born)** — free shoppers and anyone without a tier still get the Haiku Otto.
+6. Click **Review and save**, then **Save changes**.
 
 # See it work
 

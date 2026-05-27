@@ -3,10 +3,10 @@ slug: otto-is-born
 id: kgkfib8ssadj
 type: challenge
 title: Otto is Born
-teaser: Create Otto's first AI Config and wire him into the ToggleWear app.
+teaser: Create Otto's first AgentControl Config and wire him into the ToggleWear app.
 notes:
 - type: text
-  contents: Today is Otto's first day. You'll create his first AI Config in LaunchDarkly,
+  contents: Today is Otto's first day. You'll create his first Config in AgentControl,
     give him a starting prompt and a starting model, and add the few lines of server
     code that bring him to life. By the end of this challenge, Otto will say his first
     words from the ToggleWear storefront.
@@ -25,7 +25,7 @@ tabs:
   type: service
   hostname: workstation
   port: 8080
-difficulty: basic
+difficulty: ""
 timelimit: 1200
 enhanced_loading: null
 ---
@@ -36,17 +36,17 @@ ToggleWear wants an AI shopping assistant on the storefront, and we're going to 
 
 By the end of this challenge:
 
-- Otto exists as an **AI Config** in LaunchDarkly.
+- Otto exists as a **Config** in AgentControl.
 - He has a starting prompt and a starting model (Claude Haiku 4.5 on Bedrock).
-- The ToggleWear app evaluates the AI Config on each `/chat` call.
+- The ToggleWear app evaluates the Config on each `/chat` call.
 - Otto says his first real words.
 
-# Create Otto's AI Config
+# Create Otto's Config
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. From the left-hand navigation, click **AI Configs**.
-2. Click **Create AI Config** in the upper right. <!-- VERIFY: exact button label -->
+1. From the left-hand navigation, click **Configs**.
+2. Click **Create config** in the upper right.
 3. For **Name**, enter:
 ```text
 Otto Assistant
@@ -55,16 +55,16 @@ Otto Assistant
 ```text
 otto-assistant
 ```
-5. For **Mode**, select **Completion**. <!-- VERIFY: mode picker location -->
+5. For **Mode**, select **Completion**.
 6. Click **Create**.
 
-![Create AI Config](../assets/ch01-create-config.png) <!-- screenshot to be captured by operator -->
+![Create Config](../assets/ch01-create-config.png)
 
 # Add Otto's first variation
 
-The AI Config exists but has no variations yet — nothing to serve. Add the "born" variation.
+The Config exists but has no variations yet — nothing to serve. Add the "born" variation.
 
-1. On the AI Config detail page, click **Add variation**.
+1. You now on the Config detail page, adding the first variation.
 2. For **Name**, enter:
 ```text
 Otto v1 (Born)
@@ -73,12 +73,12 @@ Otto v1 (Born)
 ```text
 otto-born
 ```
-4. Under **Model**, pick **Anthropic Claude Haiku 4.5** from the list. <!-- VERIFY: model picker UX -->
-5. Under **Messages**, add a **system** message with this content:
+4. Under **Model**, pick **Anthropic** --> **claude-haiku-4-520251001** from the list.
+5. In the prompt text area, select **System**, and add this content in the prompt:
 ```text
 You are a customer service assistant for ToggleWear, an online retailer. Answer questions from customers about products and store policies. Be accurate and concise.
 ```
-6. Click **Save**.
+6. Click **Review and save**, then **Save changes**.
 
 # Turn Otto on in `test`
 
@@ -86,8 +86,8 @@ By default Otto's `test` environment is serving the placeholder "disabled" varia
 
 1. Click the **Targeting** tab.
 2. Make sure the environment selector reads **test**.
-3. Under **Default rule** (also called "fallthrough"), pick **Otto v1 (Born)**. <!-- VERIFY: UX path for setting the default variation -->
-4. Click **Review and save**, then confirm. <!-- VERIFY: save button labels -->
+3. Under **Default rule**, click **Edit** and select **Otto v1 (Born)**.
+4. Click **Review and save**, then **Save changes**.
 
 # Wire Otto into the app
 
@@ -138,11 +138,10 @@ Replace **everything between the opening marker and the** `# ─── End Chall
             bedrock.converse(modelId=model_id, messages=bedrock_messages, system=system_blocks)
         )
     except ClientError as e:
-        err = e.response.get("Error", {})
-        log.error("Bedrock ClientError code=%s model=%s message=%s",
-                  err.get("Code"), model_id, err.get("Message"))
+        code = e.response.get("Error", {}).get("Code")
+        log.error("Bedrock ClientError: %s", code)
         return JSONResponse(status_code=502, content={
-            "response": _bedrock_user_message(err.get("Code")),
+            "response": _bedrock_user_message(code),
             "turn": turn, "turn_limit": TURN_LIMIT,
         })
 

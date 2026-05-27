@@ -9,7 +9,8 @@ notes:
 - type: text
   contents: As Otto's prompt grows, you'll want to pull common pieces — brand voice,
     safety rules — out into reusable snippets. Snippets let you change those rules
-    in one place and have every AI Config that references them pick up the change.
+    in one place and have every AgentControl Config that references them pick up the
+    change.
 tabs:
 - id: detd4ug6thh5
   title: LaunchDarkly
@@ -46,7 +47,7 @@ Then we'll refactor Otto's prompt to use them.
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. From the left-hand navigation, go to **AI Configs** → **Snippets**. <!-- VERIFY: snippet navigation path -->
+1. From the left-hand navigation, go to **AI** → **Library**, then click **Snippets** from the upper menu.
 2. Click **Create snippet**.
 3. For **Name**, enter:
 ```text
@@ -83,24 +84,15 @@ Don't make up prices, sizes, or policies. If you don't know, say so and suggest 
 
 # Refactor Otto's prompt
 
-Navigate back to **AI Configs** → **Otto Assistant** → **Otto v1 (Born)**.
-
-Replace the system message with this refactored version:
-
+1. Navigate back to **Configs** → **Otto Assistant** → **Otto v1 (Born)**.
+2. In the **System** prompt text area, clear out the existing text.
+3. Click **Load snippet**, and select **Brand voice**.
+4. Below the `{{ldsnippet.brand-voice}}` markup, enter the following:
 ```text
-{{ldsnippet.brand-voice}}
-
 You work at ToggleWear, an online shop for LaunchDarkly-branded apparel. Help customers find products, answer questions about sizing and care, and guide them when they're not sure what they want.
-
-{{ldsnippet.safety-rules}}
 ```
-
-<!-- VERIFY: confirm the exact snippet-reference syntax. The LD UI may insert
-     snippet references via a button or autocomplete rather than typed
-     `{{ldsnippet.<key>}}` tokens — adjust the text above to match what the UI
-     actually produces. -->
-
-Click **Save**.
+5. With the cursor positioned in the next like, click **Load snippet** and select **Safety rules**.
+6. Click **Review and Save**, then **Save changes**.
 
 # Try it
 

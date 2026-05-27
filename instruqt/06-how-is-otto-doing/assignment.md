@@ -9,7 +9,7 @@ notes:
 - type: text
   contents: A few days of pretend-traffic have rolled through, and ToggleWear shoppers
     have been chatting with Otto and rating his answers. In this challenge you'll
-    explore the AI Configs monitoring view and see how Otto's variations stack up.
+    explore the AgentControl monitoring view and see how Otto's variations stack up.
 tabs:
 - id: ppkjnwmekdtl
   title: LaunchDarkly
@@ -34,21 +34,21 @@ enhanced_loading: null
 
 Otto has been live for a couple of pretend-days. ToggleWear shoppers have been chatting with him and giving him thumbs-up and thumbs-down ratings. (Behind the scenes, setup ran a traffic generator that fed Otto ~120 fake sessions while you were starting this lab.)
 
-The point of this challenge is to *look*. You're not going to change anything. You're going to use the AI Config monitoring view the same way you'd use it the morning after a real launch — to answer the question, "Is Otto working?"
+The point of this challenge is to *look*. You're not going to change anything. You're going to use the AgentControl monitoring view the same way you'd use it the morning after a real launch — to answer the question, "Is Otto working?"
 
 # Open the monitoring view
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. Go to **AI Configs** → **Otto Assistant**.
-2. Click the **Monitoring** tab. <!-- VERIFY: exact tab name and location -->
-3. Set the environment filter to **test**. <!-- VERIFY: env filter location -->
+1. Go to **AI** → **Configs** → **Otto Assistant**.
+2. Click the **Monitoring** tab.
+3. Set the environment filter to **test**.
 
 You should see a populated dashboard. Take a minute to look at it before reading further.
 
 # Things to look for
 
-The monitoring view shows your AI Config's performance broken down by variation. Compare **Otto v1 (Born)** to **Otto v2 (Premium)**:
+The monitoring view shows your AgentControl's performance broken down by variation. Compare **Otto v1 (Born)** to **Otto v2 (Premium)**:
 
 - **Generations**: how many times each variation was served. Born will be busier because most simulated shoppers were free-tier.
 - **Input / output tokens**: tokens by variation. Premium (Sonnet) writes longer answers, so output tokens are higher.
@@ -63,4 +63,4 @@ The monitoring view shows your AI Config's performance broken down by variation.
 
 # What happens next
 
-Otto is healthy in `test`. The next challenge is the scary one: a new model variation is going live, and we want LaunchDarkly to *automatically pull the plug* if quality drops. Click **Check** when you're satisfied with what you see here.
+Otto is healthy in `test`. The next challenge is the scary one: a new model variation is going live, and we want AgentControl to *automatically pull the plug* if quality drops. Click **Check** when you're satisfied with what you see here.
