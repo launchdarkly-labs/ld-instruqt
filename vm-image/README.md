@@ -1,6 +1,6 @@
 # VM image — `ai-configs-intro`
 
-This directory contains the inputs for the Instruqt VM image referenced by `instruqt/config.yml`. Images are built **manually through the Instruqt web console**, not by an external image pipeline. The `build-image.sh` script in this directory is the artifact you paste into a fresh Ubuntu base to produce the image.
+This directory contains the inputs for the **single shared Instruqt VM image** used by all three tracks in this workshop (Build, Evaluate, Coordinate). Each track's `config.yml` (e.g. `instruqt-build/config.yml`) references the same image. Images are built **manually through the Instruqt web console**, not by an external image pipeline. The `build-image.sh` script in this directory is the artifact you paste into a fresh Ubuntu base to produce the image.
 
 ## How to build
 
@@ -9,7 +9,7 @@ This directory contains the inputs for the Instruqt VM image referenced by `inst
 3. **Edit the top of `build-image.sh`** to point `REPO_URL` and `REPO_REF` at the desired commit of this repo. The defaults are placeholders.
 4. **Paste the entire script** into the terminal. It echoes progress at each step and `set -e`s on the first failure.
 5. **Verify** the script's last line — `Done. Save this VM as your image from the Instruqt console.` — appears and `systemctl is-enabled togglewear code-server` reports both as `enabled`.
-6. **Save the running VM as a new image** from the Instruqt console, named to match the `image:` field in `instruqt/config.yml` (currently `instruqt-launchdarkly/ai-configs-intro-1`). Bump the trailing `-N` when re-baking so labs in flight don't get pulled out from under their learners.
+6. **Save the running VM as a new image** from the Instruqt console, named to match the `image:` field in each track's `config.yml` (currently `instruqt-launchdarkly/ai-configs-intro-1` in `instruqt-build/config.yml`; Evaluate and Coordinate will reference the same image). Bump the trailing `-N` when re-baking so labs in flight don't get pulled out from under their learners.
 
 The script is idempotent enough to re-run on the same VM (it `rm -rf`s the clone and re-clones), but the intended flow is: fresh base → paste → save.
 
@@ -20,7 +20,7 @@ The script is idempotent enough to re-run on the same VM (it `rm -rf`s the clone
 | System tools | `apt` | `jq`, `git`, `curl`, `wget`, `vim`, `unzip`, `gnupg`, `ca-certificates`, `build-essential`, `lsb-release`, `software-properties-common` |
 | System Python 3 + venv | `/usr/bin/python3` | apt (`python3`, `python3-venv`, `python3-dev`). Ubuntu 24.04 noble's system python is 3.12; both `ldai` and `launchdarkly-server-sdk` require ≥3.10, so the system python is fine. |
 | Terraform | `/usr/local/bin/terraform` | Direct binary download from `releases.hashicorp.com`. Pinned in `TERRAFORM_VERSION` at the top of `build-image.sh`. HashiCorp's apt repo's noble component is incomplete, so we bypass it. |
-| App source | `/opt/ld/ai-configs-intro/` | `git clone --depth 1 --branch ${REPO_REF} ${REPO_URL}`. Subtrees the per-challenge scripts depend on: `app/`, `terraform/student-bootstrap/`, `terraform/challenge-{01..07}/`, `traffic-generator/`, `instruqt/`. |
+| App source | `/opt/ld/ai-configs-intro/` | `git clone --depth 1 --branch ${REPO_REF} ${REPO_URL}`. Subtrees the per-challenge scripts depend on: `app/`, `terraform/student-bootstrap/`, `terraform/challenge-{01..07}/`, `traffic-generator/`, `instruqt-build/` (plus `instruqt-evaluate/` and `instruqt-coordinate/` once those tracks are built). |
 | Python venv | `/opt/ld/ai-configs-intro/app/.venv/` | `pip install -r app/requirements.txt`. Used by both the FastAPI server and the traffic generators (no second venv). |
 | Seeded `.env` | `/opt/ld/ai-configs-intro/app/.env` | Copied from `.env.example`; track-level `setup-workstation` `sed`s real values in at lab start. |
 | Bootstrap TF init | `/opt/ld/ai-configs-intro/terraform/student-bootstrap/` | `terraform init` runs at bake time so lab start is fast. |
@@ -34,13 +34,13 @@ Re-bake any time:
 - A systemd unit changes (the unit is written at bake time, not lab start).
 - A new tool is needed in `apt`.
 
-**Source-of-truth note:** the current track-level `setup-workstation` does *not* `git pull` at lab start, so any change to scripts or assignment files inside `instruqt/` or `terraform/challenge-NN/` *also* requires a re-bake. This matches the reference track's convention. If you want hot-edit-without-re-bake, add a `git pull` to the top of `setup-workstation` — flagged as an open question in `PHASES.md`.
+**Source-of-truth note:** the current track-level `setup-workstation` does *not* `git pull` at lab start, so any change to scripts or assignment files inside `instruqt-build/` (or `instruqt-evaluate/` / `instruqt-coordinate/` when those exist) or `terraform/challenge-NN/` *also* requires a re-bake. This matches the reference track's convention. If you want hot-edit-without-re-bake, add a `git pull` to the top of `setup-workstation` — flagged as an open question in `PHASES.md`.
 
 ## What the image does **not** include
 
 - AWS credentials, LD access tokens, LD SDK/client/project keys — those arrive via Instruqt secrets and `setup-workstation` at lab start.
 - The student's LD project — created at lab start by `terraform/student-bootstrap/`.
-- AI Config resources themselves — those are created by the learner during the labs (or by per-challenge `solve-workstation` Terraform if the learner clicks Skip).
+- Config resources themselves — those are created by the learner during the labs (or by per-challenge `solve-workstation` Terraform if the learner clicks Skip).
 
 ## Things the per-challenge scripts assume are on the image
 

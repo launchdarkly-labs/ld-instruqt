@@ -32,8 +32,6 @@ APP_ENV=/opt/ld/ai-configs-intro/app/.env
 sed -i 's|^LD_SDK_KEY=.*|LD_SDK_KEY='"${LD_SDK_KEY}"'|g' "$APP_ENV"
 sed -i 's|^LD_CLIENT_KEY=.*|LD_CLIENT_KEY='"${LD_CLIENT_KEY}"'|g' "$APP_ENV"
 sed -i 's|^LD_PROJECT_KEY=.*|LD_PROJECT_KEY='"${LD_PROJECT_KEY}"'|g' "$APP_ENV"
-sed -i 's|^AWS_ACCESS_KEY_ID=.*|AWS_ACCESS_KEY_ID='"${AWS_ACCESS_KEY_ID}"'|g' "$APP_ENV"
-sed -i 's|^AWS_SECRET_ACCESS_KEY=.*|AWS_SECRET_ACCESS_KEY='"${AWS_SECRET_ACCESS_KEY}"'|g' "$APP_ENV"
 sed -i 's|^AWS_REGION=.*|AWS_REGION='"${AWS_REGION}"'|g' "$APP_ENV"
 
 service togglewear restart

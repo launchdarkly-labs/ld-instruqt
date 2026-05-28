@@ -8,11 +8,11 @@ Format: one decision per section, dated, with options considered and reason for 
 
 ## Track scope and audience
 
-**Decision:** Six substantive hands-on labs (plus welcome, two quizzes, wrap-up = nine challenges total) covering: AI Config creation, prompt iteration, prompt snippets, variations & targeting, monitoring, and guarded rollout.
+**Decision:** Six substantive hands-on labs (plus welcome, two quizzes, wrap-up = nine challenges total) covering: Config creation, prompt iteration, prompt snippets, variations & targeting, monitoring, and guarded rollout.
 
 **Audience:** Developers — both LaunchDarkly evaluators and existing LD customers expanding into AI use cases. Assumes LD fundamentals are known.
 
-**Rationale:** This is a 100-level introduction to AI Configs. The six concepts above are the product's core surface area minus agents (deferred). Targeting developers rather than mixed audiences lets us assume technical literacy and skip foundational LD content.
+**Rationale:** This is a 100-level introduction to AgentControl. The six concepts above are the product's core surface area minus agents (deferred). Targeting developers rather than mixed audiences lets us assume technical literacy and skip foundational LD content.
 
 **Options considered:**
 - *Comprehensive intro covering everything including agents.* Rejected: too much for 2 hours; agent configs deserve their own 200-level track.
@@ -30,17 +30,17 @@ Format: one decision per section, dated, with options considered and reason for 
 
 ## App architecture: single Python process serving frontend + API
 
-**Decision:** One FastAPI process serves both the HTML/JS frontend (as static files) and the `/chat` API endpoint on port 3000. AI Config evaluation and Bedrock calls happen server-side in Python; the JS frontend only handles UI.
+**Decision:** One FastAPI process serves both the HTML/JS frontend (as static files) and the `/chat` API endpoint on port 3000. Config evaluation and Bedrock calls happen server-side in Python; the JS frontend only handles UI.
 
 **Rationale:**
 - The reference track's app is a single process on port 3000; matching this means learners' muscle memory carries over.
-- AI Configs evaluation belongs server-side regardless — prompts and SDK keys shouldn't be in the browser.
-- Single repo, single language to edit per challenge (server-side Python for AI Configs concepts; the JS exists but learners barely touch it).
+- Config evaluation belongs server-side regardless — prompts and SDK keys shouldn't be in the browser.
+- Single repo, single language to edit per challenge (server-side Python for AgentControl concepts; the JS exists but learners barely touch it).
 - One process = simpler VM image, fewer ports, fewer ways to break.
 
 **Options considered:**
 - *Separate Python API + static JS frontend on different ports.* Rejected: more moving parts for no learning gain.
-- *Node/Next.js stack matching the reference track exactly.* Rejected: the operator chose Python for server-side, and that's the more idiomatic stack for AI Configs SDK usage anyway.
+- *Node/Next.js stack matching the reference track exactly.* Rejected: the operator chose Python for server-side, and that's the more idiomatic stack for AgentControl SDK usage anyway.
 
 ---
 
@@ -123,7 +123,7 @@ Format: one decision per section, dated, with options considered and reason for 
 
 ## Challenge 7: judge + guarded rollout, all pre-built
 
-**Decision:** Challenge 7's setup script creates *everything*: the Nova Pro variation with a deliberately-poor prompt, a second AI Config that acts as a "judge" scoring responses for brand-voice adherence, a metric wired to the judge's output, and the guarded rollout configuration. The learner observes the rollout proceed and watches the auto-rollback fire. A sabotage script is included for presenters to trigger the rollback dramatically on demand.
+**Decision:** Challenge 7's setup script creates *everything*: the Nova Pro variation with a deliberately-poor prompt, a second Config that acts as a "judge" scoring responses for brand-voice adherence, a metric wired to the judge's output, and the guarded rollout configuration. The learner observes the rollout proceed and watches the auto-rollback fire. A sabotage script is included for presenters to trigger the rollback dramatically on demand.
 
 **Rationale:**
 - Teaching the judge pattern from scratch would consume the entire 2-hour budget on its own. Pre-building keeps the learner focused on the *outcome* (guarded rollouts protect AI quality) not the mechanics.
@@ -177,13 +177,13 @@ Format: one decision per section, dated, with options considered and reason for 
 
 ---
 
-## Terraform provider vs. REST API for AI Configs resources
+## Terraform provider vs. REST API for Config resources
 
-**Decision:** Prefer the `launchdarkly/launchdarkly` Terraform provider for AI Configs resources where supported. Where the provider lacks AI Configs support, fall back to REST API calls via `null_resource` + `local-exec curl`.
+**Decision:** Prefer the `launchdarkly/launchdarkly` Terraform provider for Config resources where supported. Where the provider lacks Config support, fall back to REST API calls via `null_resource` + `local-exec curl`.
 
-**Rationale:** AI Configs is a relatively new product. The Terraform provider may not yet cover every resource type. Provider-native is preferred (cleaner code, drift detection), but the REST fallback is unblocked while waiting for provider updates.
+**Rationale:** AgentControl is a relatively new product. The Terraform provider may not yet cover every resource type. Provider-native is preferred (cleaner code, drift detection), but the REST fallback is unblocked while waiting for provider updates.
 
-**Verification step:** During Phase 1, check the current Terraform provider documentation for AI Configs resource support and record findings in `PHASES.md` Phase 1 notes.
+**Verification step:** During Phase 1, check the current Terraform provider documentation for Config resource support and record findings in `PHASES.md` Phase 1 notes.
 
 ---
 
@@ -191,7 +191,7 @@ Format: one decision per section, dated, with options considered and reason for 
 
 **Decision:** Pin specific versions of `launchdarkly-server-sdk`, `launchdarkly-server-sdk-ai` (`ldai`), `boto3`, `fastapi`, and `uvicorn` in `requirements.txt`. Verify latest stable versions at implementation time via web search; do not guess from training data.
 
-**Rationale:** AI Configs SDK is evolving rapidly. Unpinned versions cause non-reproducible failures when learners run the track months after authoring.
+**Rationale:** AgentControl SDK is evolving rapidly. Unpinned versions cause non-reproducible failures when learners run the track months after authoring.
 
 ---
 
@@ -213,7 +213,7 @@ Format: one decision per section, dated, with options considered and reason for 
 
 ## UI instructions in assignment.md: drafts subject to operator verification
 
-**Decision:** Claude Code drafts click-by-click LaunchDarkly UI instructions in `assignment.md` files based on reading the public AI Configs docs. The operator then walks through each flow with the draft open, corrects UI specifics (button labels, menu paths, step ordering), captures screenshots, and removes `<!-- VERIFY: ... -->` markers. Phase done-when conditions require this operator verification pass before sign-off.
+**Decision:** Claude Code drafts click-by-click LaunchDarkly UI instructions in `assignment.md` files based on reading the public AgentControl docs. The operator then walks through each flow with the draft open, corrects UI specifics (button labels, menu paths, step ordering), captures screenshots, and removes `<!-- VERIFY: ... -->` markers. Phase done-when conditions require this operator verification pass before sign-off.
 
 **Rationale:** Claude Code cannot drive a browser in this environment — it can't click through the LaunchDarkly UI to verify flows itself. Options considered:
 
@@ -226,13 +226,13 @@ This decision is enforced in `CLAUDE.md` ("UI instructions in assignment.md are 
 
 ---
 
-## LD model name → Bedrock model ID lives in the app, not the AI Config
+## LD model name → Bedrock model ID lives in the app, not the Config
 
-**Decision:** LaunchDarkly's model config registry stores vendor-neutral model names like `claude-haiku-4-5`, `nova-pro`. The app's `server.py` maintains a `BEDROCK_MODEL_IDS` dict that maps each to the corresponding Bedrock model or inference-profile ID (e.g. `us.anthropic.claude-haiku-4-5-20251001-v1:0`). Adding a new model means a row in that dict — no AI Config changes needed.
+**Decision:** LaunchDarkly's model config registry stores vendor-neutral model names like `claude-haiku-4-5`, `nova-pro`. The app's `server.py` maintains a `BEDROCK_MODEL_IDS` dict that maps each to the corresponding Bedrock model or inference-profile ID (e.g. `us.anthropic.claude-haiku-4-5-20251001-v1:0`). Adding a new model means a row in that dict — no Config changes needed.
 
 **Rationale:** Discovered the hard way during Phase 3: the `modelName` passed when creating a variation is a hint, but what `cfg.model.name` returns from the SDK is the model config's vendor-neutral `modelId`. Bedrock needs the full model/profile ID. The cleanest place for that translation is the boundary where we leave LD-land and enter AWS-land — in the app's Bedrock client wrapper.
 
-**Side benefit:** The LD AI Config stays vendor-agnostic. If we ever swap Bedrock for OpenAI direct, only `BEDROCK_MODEL_IDS` (or its OpenAI equivalent) changes — the AI Configs and variations don't.
+**Side benefit:** The LD Config stays vendor-agnostic. If we ever swap Bedrock for OpenAI direct, only `BEDROCK_MODEL_IDS` (or its OpenAI equivalent) changes — the Configs and variations don't.
 
 ---
 
@@ -240,8 +240,8 @@ This decision is enforced in `CLAUDE.md` ("UI instructions in assignment.md are 
 
 **Decision:** Each challenge has its own `terraform/challenge-NN/` module with its own state. Modules use:
 
-- `launchdarkly_*` resources for NEW resources introduced by that challenge (e.g. challenge-01 creates the Haiku model_config, the AI Config, and the first variation; challenge-05 creates the Sonnet variation; challenge-07 creates Nova Pro model_config, the Stiff variation, the judge config, and the metric).
-- `null_resource` + `local-exec curl` for: updates to resources owned by earlier challenges' modules (which Terraform can't touch from a different module without `terraform import`), and for resources the provider doesn't yet expose (snippets, AI Config targeting rules, guarded rollouts, AI Config `evaluationMetricKey`).
+- `launchdarkly_*` resources for NEW resources introduced by that challenge (e.g. challenge-01 creates the Haiku model_config, the Config, and the first variation; challenge-05 creates the Sonnet variation; challenge-07 creates Nova Pro model_config, the Stiff variation, the judge config, and the metric).
+- `null_resource` + `local-exec curl` for: updates to resources owned by earlier challenges' modules (which Terraform can't touch from a different module without `terraform import`), and for resources the provider doesn't yet expose (snippets, Config targeting rules, guarded rollouts, Config `evaluationMetricKey`).
 
 **Rationale:** Each challenge's solve must produce the END STATE of that challenge regardless of whether prior challenges were completed in code or skipped. Terraform's per-module state model doesn't share resources across modules, so updates to "already-managed" resources need to go through either `terraform import` (operationally heavy) or REST API (lightweight). REST via `null_resource` won.
 
@@ -251,7 +251,7 @@ This decision is enforced in `CLAUDE.md` ("UI instructions in assignment.md are 
 
 ## server.py BEFORE state + marker-based paste pattern
 
-**Decision:** `server.py` ships from the VM image in a BEFORE state: imports/init/helpers/turn-cap pre-wired, but `/chat`'s body is a clearly-marked stub block returning a canned "not wired yet" response. Challenge 01 has the learner replace the stub with ~30 lines of AI Config + Bedrock eval logic. The solve script applies the same paste programmatically using a Python script that finds the markers and substitutes the block.
+**Decision:** `server.py` ships from the VM image in a BEFORE state: imports/init/helpers/turn-cap pre-wired, but `/chat`'s body is a clearly-marked stub block returning a canned "not wired yet" response. Challenge 01 has the learner replace the stub with ~30 lines of Config + Bedrock eval logic. The solve script applies the same paste programmatically using a Python script that finds the markers and substitutes the block.
 
 A second marker (`# ─── Challenge 07 judge injects below this marker ──────`) sits at the bottom of the post-Challenge-01 code. Challenge 07's setup script finds it and injects the judge integration block.
 
@@ -261,19 +261,19 @@ A second marker (`# ─── Challenge 07 judge injects below this marker ─�
 
 ---
 
-## AI Config snippet-reference syntax: deferred to operator verification
+## Config snippet-reference syntax: deferred to operator verification
 
 **Decision:** Phase 4 / Challenge 03 introduces prompt snippets via REST (the Terraform provider doesn't expose them yet). The reference syntax for embedding a snippet in a variation message — i.e. what token the UI/SDK expects — isn't documented anywhere I could find at authoring time. The placeholder `{{ldsnippet.<key>}}` is used throughout, with `<!-- VERIFY -->` markers in the assignment and Terraform calling it out. Operator confirms or fixes during click-through.
 
 **Rationale:** Spent significant time searching docs, OpenAPI, and SDK source — no canonical reference. Authoring against a placeholder is faster than blocking the whole phase on this single detail; the marker pattern (already a documented project convention) handles the verification gap.
 
-**Where this lives:** `instruqt/03-otto-on-brand/assignment.md`, `instruqt/05-otto-for-everyone/assignment.md`, `terraform/challenge-03/main.tf`, `terraform/challenge-05/main.tf`. Update all four locations together when the real syntax is confirmed.
+**Where this lives:** `instruqt-build/03-otto-on-brand/assignment.md`, `instruqt-build/05-otto-for-everyone/assignment.md`, `terraform/challenge-03/main.tf`, `terraform/challenge-05/main.tf`. Update all four locations together when the real syntax is confirmed.
 
 ---
 
 ## Guarded rollout configured by the learner, not pre-built
 
-**Decision:** Phase 7's setup pre-builds everything *except* the guarded rollout itself: the Nova Pro Stiff variation, the judge AI Config + metric, the server-side judge integration, and a low-rate background traffic generator. The learner configures the guarded rollout in the LD UI as the lab's actionable centerpiece.
+**Decision:** Phase 7's setup pre-builds everything *except* the guarded rollout itself: the Nova Pro Stiff variation, the judge Config + metric, the server-side judge integration, and a low-rate background traffic generator. The learner configures the guarded rollout in the LD UI as the lab's actionable centerpiece.
 
 **Rationale:** Two reasons. First, LaunchDarkly's REST API for starting a guarded rollout isn't publicly documented at authoring time — the OpenAPI spec includes the `GuardedReleaseConfig` schema and `ReleaseGuardianConfiguration` but no path uses them in the spec. Reverse-engineering the UI's API calls was deferred. Second, configuring the rollout in the UI *is* the most important learning moment of the track — making the learner do it themselves reinforces the workshop's main lesson.
 
@@ -285,7 +285,7 @@ A second marker (`# ─── Challenge 07 judge injects below this marker ─�
 
 ## Judge invocation: SDK eval + manual Bedrock call
 
-**Decision:** The judge integration in `server.py` (added by Challenge 07's setup patch) calls `ai_client.judge_config(...)` to evaluate the `otto-response-judge` AI Config (which interpolates the `{{response}}` template variable with Otto's answer), then calls `bedrock.converse()` manually with the resulting model and messages. The 1-5 score is parsed from the response text and emitted via raw `ld_client.track("otto-quality-score", ...)` rather than `tracker.track_judge_result(...)`.
+**Decision:** The judge integration in `server.py` (added by Challenge 07's setup patch) calls `ai_client.judge_config(...)` to evaluate the `otto-response-judge` Config (which interpolates the `{{response}}` template variable with Otto's answer), then calls `bedrock.converse()` manually with the resulting model and messages. The 1-5 score is parsed from the response text and emitted via raw `ld_client.track("otto-quality-score", ...)` rather than `tracker.track_judge_result(...)`.
 
 **Rationale:** The `ldai` SDK supports a higher-level judge flow via `create_judge()` + `judge.evaluate()`, but it relies on an AI Provider plugin system (langchain, openai). There's no `ldai_bedrock` provider as of authoring. Writing a custom provider was scoped out. Manual Bedrock invocation works fine and stays transparent to the workshop's audience — the code reads exactly like the regular Otto eval.
 
@@ -293,8 +293,42 @@ A second marker (`# ─── Challenge 07 judge injects below this marker ─�
 
 ## Traffic generator skips Bedrock entirely
 
-**Decision:** `traffic-generator/generate_traffic.py` and `background_traffic.py` evaluate the AI Config to get a real tracker, then emit synthetic `track_duration`, `track_tokens`, `track_success`, and `track_feedback` events with values weighted per model. They do NOT call Bedrock.
+**Decision:** `traffic-generator/generate_traffic.py` and `background_traffic.py` evaluate the Config to get a real tracker, then emit synthetic `track_duration`, `track_tokens`, `track_success`, and `track_feedback` events with values weighted per model. They do NOT call Bedrock.
 
 **Rationale:** Real Bedrock calls would make 120 sessions take ~10 minutes and cost real money per learner. The monitoring view only consumes the LD-side metric events, so skipping Bedrock costs nothing in terms of what the lab shows. Weights are tuned so Sonnet looks visibly better than Haiku in the dashboard, and Nova Pro Stiff looks worse — the comparison is what matters, not the absolute numbers.
 
 **Side benefit:** Same generator works as a sabotage tool — see `sabotage.py`, which is just the metric-emission path without the eval boilerplate.
+
+---
+
+## Workshop splits into three sibling Instruqt tracks (2026-05-28)
+
+**Decision:** What was originally one 9-challenge Instruqt track becomes **three sibling tracks** that each map 1:1 to a lesson in the AgentControl cert:
+
+- **Build (L1)** — `instruqt-build/`. The original track, near-final. Otto's lifecycle from first Config to monitoring.
+- **Evaluate (L2)** — `instruqt-evaluate/`. Golden datasets, built-in judges, custom judges, prompt experiments, guarded rollout (the former `07-trust-but-verify` lifts here and rewires to consume the brand-voice judge introduced earlier in L2), adaptive switching.
+- **Coordinate (L3)** — `instruqt-coordinate/`. Multi-agent **Concierge** team (Toggle → Curator | Tailor | Tracker → Otto → customer). Otto's character survives as the brand-voice rewriter. Agent-mode Configs, agent graphs, SDK traversal with `reverse_traverse` + `graph_key`, per-agent guarded rollout, self-healing.
+
+All three tracks live in this repo and share a **single VM image**. Each track's track-level `setup-workstation` runs prior-track solve scripts to materialize the starting state, so a learner can land in any track and arrive at a known good baseline.
+
+**Rationale:**
+
+- One mega-track at 22 challenges would be ~6h self-paced and far past the 2h presenter budget that the original track was designed for. Three ~2h tracks let learners pick a level and finish it in one sitting, and they map cleanly to the cert lessons.
+- The cert (Lessons 1-3) was being rewritten to mirror this content 1:1; explicit per-track artifacts give the cert team something concrete to reference per lesson rather than asking them to slice across one big track.
+- The existing Build track stays self-contained for evaluators who only want the basics — no scope-creep from adding eval/multi-agent content in front of them.
+
+**Trade-offs accepted:**
+
+- A learner starting Evaluate or Coordinate cold pays a small startup delay while prior-track solves materialize their workspace. Acceptable for the simplicity of one image.
+- The `terraform/challenge-NN/` directory naming is Build-centric; Evaluate and Coordinate will get sibling directory conventions (e.g. `terraform/evaluate-NN/`, `terraform/coordinate-NN/`) when authored. The original `terraform/challenge-NN/` won't be renamed — it stays as Build's record.
+
+**Concierge cast naming:**
+
+The L3 cast is a deliberate naming pattern: customer-facing agents get personal names (**Toggle** the triage receptionist, **Otto** the brand-voice rewriter), back-of-house specialists get functional role names (**Curator**, **Tailor**, **Tracker**). Mirrors how a real concierge team feels and makes the graph topology readable from the names alone. Otto's character is preserved by giving him a role inside the team rather than retiring him or creating a parallel "Concierge Otto."
+
+**Why not refactor Otto into agent mode in L3 instead:**
+
+AgentControl Configs are mode-permanent — once created in `completion` mode, a Config can't be converted to `agent` mode. Option A (deprecate Otto, replace with an agent-mode version) was rejected because:
+1. It breaks Build/L1's "Otto is grown" wrap-up arc retroactively.
+2. It tries to evade the mode-permanence rule rather than teach it.
+3. The Concierge-team framing turns mode-permanence into a teachable moment (here's why we built a new system instead of upgrading Otto's Config in place).

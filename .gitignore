@@ -138,3 +138,6 @@ tmp/
 # Reference track dropped in by operator for convention-mirroring; not part of this project
 instruqt-reference/
 instruqt-jwt.json
+
+# Local Claude Code project state (settings, skills, session memory)
+.claude/

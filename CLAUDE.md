@@ -4,20 +4,28 @@ This file is the operational spec for Claude Code working on this project. Read 
 
 ## What we're building
 
-An **Instruqt track** that teaches LaunchDarkly's **AI Configs** product through hands-on labs. The track introduces AI Configs to two audiences:
+A three-track **Instruqt workshop** teaching LaunchDarkly's **AgentControl** product through hands-on labs. The workshop introduces AgentControl to two audiences:
 
 1. Developers evaluating LaunchDarkly
 2. Existing LaunchDarkly customers (developers) expanding into AI use cases
 
-Learners are assumed to already understand LaunchDarkly fundamentals (flags, contexts, environments). This track does **not** re-teach those.
+Learners are assumed to already understand LaunchDarkly fundamentals (flags, contexts, environments). This workshop does **not** re-teach those.
 
-**Format:** 6 substantive hands-on labs plus a welcome challenge, 2 quiz interstitials, and a wrap-up — 9 challenges total. Designed to run in ~2 hours with a presenter delivering slide-based lecture between labs, or ~1 hour self-paced.
+**Three sibling tracks**, each ~2h, each mapping 1:1 to a lesson in the AgentControl cert:
 
-**Lecture content lives in slides, not in the track.** Do not embed conceptual exposition in `assignment.md` files beyond what a self-paced learner needs to make sense of each step.
+- **Build (L1)** — `instruqt-build/`. Otto's lifecycle from first Config to monitoring. The original track; near-final.
+- **Evaluate (L2)** — `instruqt-evaluate/`. Judges, experiments, guarded rollout, adaptive switching. Scope pending.
+- **Coordinate (L3)** — `instruqt-coordinate/`. Multi-agent Concierge team with Otto as the brand-voice rewriter. Scope pending (needs a Phase 0 spike first).
+
+The three tracks share a single VM image and the `app/`, `terraform/student-bootstrap/`, `traffic-generator/`, and `vm-image/` directories. Each track's `setup-workstation` runs prior-track solve scripts to materialize starting state.
+
+**Per-track format:** roughly 6-8 substantive hands-on labs plus a welcome, 1-2 quiz interstitials, and a wrap-up. Designed to run in ~2 hours each with a presenter delivering slide-based lecture between labs, or ~1 hour self-paced.
+
+**Lecture content lives in slides, not in the tracks.** Do not embed conceptual exposition in `assignment.md` files beyond what a self-paced learner needs to make sense of each step.
 
 ## The reference track
 
-This track mirrors the structure and conventions of an existing LaunchDarkly Instruqt track: the "01-release" basics track at `launchdarkly-labs/launchdarkly-workshops/launchdarkly-basics/instruqt/01-release`. If you can read it (the source is in the repo or available from the project owner), do so before scaffolding. Otherwise, follow the conventions documented in this file — they were extracted directly from that track.
+Each of our three tracks mirrors the structure and conventions of an existing LaunchDarkly Instruqt track: the "01-release" basics track at `launchdarkly-labs/launchdarkly-workshops/launchdarkly-basics/instruqt/01-release`. If you can read it (the source is in the repo or available from the project owner), do so before scaffolding. Otherwise, follow the conventions documented in this file — they were extracted directly from that track.
 
 ## Repository layout
 
@@ -25,9 +33,9 @@ This track mirrors the structure and conventions of an existing LaunchDarkly Ins
 <repo-root>/
 ├── CLAUDE.md                    # this file
 ├── DECISIONS.md                 # why decisions were made
-├── PHASES.md                    # build sequence
-├── NARRATIVE.md                 # Otto's story + voice guide
-├── instruqt/                    # the Instruqt track itself
+├── PHASES.md                    # historical build sequence for Track 1 (Build) only
+├── NARRATIVE.md                 # Otto's story + voice guide (Build); Concierge cast for Coordinate
+├── instruqt-build/              # Track 1 — Build (L1). Near-final.
 │   ├── track.yml
 │   ├── config.yml
 │   ├── track_scripts/
@@ -40,10 +48,12 @@ This track mirrors the structure and conventions of an existing LaunchDarkly Ins
 │   ├── 04-quiz-configs-and-snippets/
 │   ├── 05-otto-for-everyone/
 │   ├── 06-how-is-otto-doing/
-│   ├── 07-trust-but-verify/
+│   ├── 07-trust-but-verify/     # lifts to instruqt-evaluate/ when Track 2 is built
 │   ├── 08-wrap-up/
 │   └── assets/                  # images referenced from assignment.md
-├── app/                         # the ToggleWear app baked into the VM
+├── instruqt-evaluate/           # Track 2 — Evaluate (L2). Scope pending. See README inside.
+├── instruqt-coordinate/         # Track 3 — Coordinate (L3). Scope pending (Phase 0 spike first).
+├── app/                         # shared ToggleWear app, baked into the single VM image
 │   ├── server.py                # FastAPI server (also serves static frontend)
 │   ├── static/
 │   │   ├── index.html
@@ -59,12 +69,15 @@ This track mirrors the structure and conventions of an existing LaunchDarkly Ins
 │   ├── challenge-05/
 │   ├── challenge-06/
 │   └── challenge-07/
-├── traffic-generator/           # script run by challenge 06 setup
+├── gcp-federation/              # AWS IAM role + GCP OIDC trust for federated Bedrock creds
+├── traffic-generator/           # scripts run by per-challenge setup
 │   └── generate_traffic.py
-└── vm-image/                    # inputs for baking the VM image
+└── vm-image/                    # inputs for baking the single shared VM image
     ├── README.md                # build instructions for the operator
-    └── (Dockerfile or Packer config — choose one in Phase 1)
+    └── build-image.sh
 ```
+
+The `terraform/challenge-NN/` directories will get sibling additions when Evaluate and Coordinate are scoped (e.g. `terraform/evaluate-NN/`, `terraform/coordinate-NN/`). For now they cover Build's challenges only.
 
 ## Instruqt conventions (extracted from the reference track)
 
@@ -159,12 +172,12 @@ FLAG_DATA=$(curl -s -X GET \
   -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
 
 if [ -z "$FLAG_DATA" ] || [ "$(echo $FLAG_DATA | jq -r .key)" = "null" ]; then
-  fail-message "The AI Config has not been created. Please follow the steps to create it."
+  fail-message "The Config has not been created. Please follow the steps to create it."
   exit 1
 fi
 ```
 
-For AI Configs specifically, use the AI Configs API endpoints — verify current endpoint shape in the LaunchDarkly API docs before writing checks. **Do not invent endpoints.**
+For AgentControl specifically, use the AgentControl API endpoints — verify current endpoint shape in the LaunchDarkly API docs before writing checks. **Do not invent endpoints.**
 
 ### Solve scripts
 
@@ -202,9 +215,9 @@ When implementing, **verify the latest stable version** of each before pinning. 
 - **FastAPI** + **uvicorn** for the server
 - **boto3** for Bedrock
 - **launchdarkly-server-sdk** (Python)
-- **launchdarkly-server-sdk-ai** (Python AI Configs SDK; package name `ldai`)
+- **launchdarkly-server-sdk-ai** (Python AgentControl SDK; package name `ldai`)
 - **Vanilla JavaScript** for the frontend — no React, no Vue, no build step
-- **Terraform** with `launchdarkly/launchdarkly` provider — verify provider version supports AI Configs resources before writing modules; if it doesn't, note this in `PHASES.md` Phase 1 and fall back to the REST API via `null_resource` + `local-exec curl`
+- **Terraform** with `launchdarkly/launchdarkly` provider — verify provider version supports Config resources before writing modules; if it doesn't, note this in `PHASES.md` Phase 1 and fall back to the REST API via `null_resource` + `local-exec curl`
 
 Pin versions in `requirements.txt` and `terraform { required_providers { ... } }` blocks.
 
@@ -213,7 +226,7 @@ Pin versions in `requirements.txt` and `terraform { required_providers { ... } }
 Things this track must **not** do:
 
 - Re-teach LaunchDarkly basics (flags, contexts, environments). Assume mastery.
-- Cover agentic AI Configs (agent configs, tool use, multi-step reasoning). Deferred to a future 200-level track.
+- Cover agent-mode Configs (tool use, multi-step reasoning). Deferred to a future 200-level track.
 - Include any code or assets from the legacy Toggle Outfitters / `talkin-ship-workshop-app`. Fresh codebase.
 - Include lecture content. Presenters deliver lecture via slides.
 - Implement a cart, checkout, authentication, or any commerce functionality beyond the product display and chat widget.
@@ -232,7 +245,7 @@ Document all handoff points clearly in `vm-image/README.md`.
 
 - **Work one phase at a time.** Read `PHASES.md`. Pick the current phase. Complete it. Stop. Wait for review before starting the next phase.
 - **When a decision arises that isn't in `DECISIONS.md`, ask the operator.** Do not invent product/UX/architectural decisions silently. Add the answer to `DECISIONS.md` when you proceed.
-- **Verify, don't assume.** Before writing code that calls a specific API, library, or product feature, web-search the current docs. AI Configs is a relatively new product; API shapes and SDK ergonomics may have changed since this file was written.
+- **Verify, don't assume.** Before writing code that calls a specific API, library, or product feature, web-search the current docs. AgentControl is a relatively new product; API shapes and SDK ergonomics may have changed since this file was written.
 - **Don't ship the `.remote` files.** Authoring them creates publishing conflicts.
 - **Don't reformat the reference track's conventions for "consistency."** Even if a pattern looks suboptimal, match it. The reference track lands well with learners; deviation has a cost.
 
@@ -242,9 +255,9 @@ Claude Code cannot drive a browser and cannot click through the LaunchDarkly UI 
 
 What this means for Claude Code's behavior:
 
-- When writing click-by-click steps, base them on the current LaunchDarkly AI Configs docs (web-search to confirm) and mirror the reference track's voice. Be specific (bold button labels, numbered steps) — the operator needs concrete drafts to verify against, not vague hedges.
+- When writing click-by-click steps, base them on the current LaunchDarkly AgentControl docs (web-search to confirm) and mirror the reference track's voice. Be specific (bold button labels, numbered steps) — the operator needs concrete drafts to verify against, not vague hedges.
 - **Do not invent UI elements.** If the docs don't make a step clear, write the step as best you can and add a `<!-- VERIFY: <what to check> -->` HTML comment in the `assignment.md` flagging what the operator should confirm. The operator will resolve and remove these during review.
-- **Do not generate screenshots.** Any image references in `assignment.md` should point to filenames in `instruqt/assets/` that the operator will populate with real screenshots after verifying the flow. Use placeholder filenames like `assets/ch01-create-config.png` and list expected screenshots in the phase's deliverables.
+- **Do not generate screenshots.** Any image references in `assignment.md` should point to filenames in the corresponding track's `assets/` directory (e.g. `instruqt-build/assets/`) that the operator will populate with real screenshots after verifying the flow. Use placeholder filenames like `assets/ch01-create-config.png` and list expected screenshots in the phase's deliverables.
 - **API-driven checks are not UI-driven.** `check-workstation` scripts hit the REST API and don't depend on UI flow accuracy. Authoritative API docs are reliable; write checks confidently from them.
 - When an assignment step is genuinely uncertain (the docs don't cover it, or the feature is too new for stable docs), surface the uncertainty to the operator in the phase summary rather than writing a confident-sounding guess.
 

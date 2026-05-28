@@ -1,5 +1,11 @@
 # PHASES.md
 
+**Scope (as of 2026-05-28):** this file is the historical build sequence for **Track 1 / Build (`instruqt-build/`) only**. All nine phases below are complete. The workshop has since split into three sibling tracks — see the "Workshop splits into three sibling Instruqt tracks" entry in `DECISIONS.md`. Per-track scope docs for **Evaluate** (`instruqt-evaluate/`) and **Coordinate** (`instruqt-coordinate/`) will live alongside this file (likely `PHASES-evaluate.md` and `PHASES-coordinate.md`) once they're authored.
+
+Path references in the phases below predate the rename of `instruqt/` to `instruqt-build/`; treat them as historical.
+
+---
+
 This file is the build sequence. Claude Code works one phase at a time, stops at each phase boundary for operator review, and only begins the next phase when explicitly told to proceed.
 
 Each phase has:
@@ -22,7 +28,7 @@ Each phase has:
 - `terraform/student-bootstrap/` Terraform module creating the LD project and any base resources (segments, environments, etc. needed by later challenges)
 - `vm-image/README.md` documenting what the image must contain and how to build it (Dockerfile or Packer config — decide and document)
 - A **Phase 1 verification note** appended to this file documenting:
-  - Current `launchdarkly/launchdarkly` Terraform provider version and which AI Configs resources it supports
+  - Current `launchdarkly/launchdarkly` Terraform provider version and which Config resources it supports
   - Current `ldai` Python package version
   - Current `launchdarkly-server-sdk` Python version
   - Whether Bedrock cross-region inference profiles work as expected for Sonnet in the chosen region
@@ -65,18 +71,18 @@ Each phase has:
 
 ---
 
-## Phase 3: AI Configs wiring (locally working chat)
+## Phase 3: AgentControl wiring (locally working chat)
 
-**Goal:** Replace the canned `/chat` response with a real LaunchDarkly AI Configs evaluation that calls Bedrock and returns a real model response. Done with a hardcoded local LD project for development — Instruqt provisioning comes later.
+**Goal:** Replace the canned `/chat` response with a real LaunchDarkly AgentControl evaluation that calls Bedrock and returns a real model response. Done with a hardcoded local LD project for development — Instruqt provisioning comes later.
 
 **Deliverables:**
 - `app/server.py` updated:
   - Initialize the LaunchDarkly SDK using `LD_SDK_KEY` env var
-  - Initialize the AI Configs SDK (`ldai`)
-  - On `/chat`, build a context including user tier, evaluate the Otto AI Config, call Bedrock with the resulting model + prompt, return the response
+  - Initialize the AgentControl SDK (`ldai`)
+  - On `/chat`, build a context including user tier, evaluate the Otto Config, call Bedrock with the resulting model + prompt, return the response
   - Enforce the configurable turn cap; return graceful limit message when exceeded
   - Track `LD_CHAT_TURN_LIMIT` env var (default value documented)
-- A development LaunchDarkly project (created manually by the operator or via a dev Terraform module) with Otto's AI Config defined for local testing
+- A development LaunchDarkly project (created manually by the operator or via a dev Terraform module) with Otto's Config defined for local testing
 - Updated `app/requirements.txt` and `.env.example`
 - Logging: each `/chat` call logs which variation was served, token counts, latency
 
@@ -94,7 +100,7 @@ Each phase has:
 
 ## Phase 4: Challenges 01-03 (create, iterate, snippets)
 
-**Goal:** Author the first three substantive labs: create the first AI Config, iterate on the prompt, refactor into snippets.
+**Goal:** Author the first three substantive labs: create the first Config, iterate on the prompt, refactor into snippets.
 
 **Deliverables (per challenge):**
 - `instruqt/0N-<slug>/assignment.md` with full body content following `NARRATIVE.md` voice
@@ -106,13 +112,13 @@ Each phase has:
 
 **Specific notes per challenge:**
 
-- **01 Otto is born:** Learner creates the AI Config in the LD UI, then pastes server-side SDK code into `server.py`. The pre-baked `server.py` should have a clearly-marked block to replace. The check script validates both the LD resource (config exists with a Haiku variation) and the code change (file content match).
+- **01 Otto is born:** Learner creates the Config in the LD UI, then pastes server-side SDK code into `server.py`. The pre-baked `server.py` should have a clearly-marked block to replace. The check script validates both the LD resource (config exists with a Haiku variation) and the code change (file content match).
 - **02 Give Otto a personality:** No code changes. Learner edits the prompt in LD UI; the running app reflects the change. Check script validates the prompt content matches expected updated text (or a regex pattern, to allow some flexibility).
 - **03 Otto on-brand at scale:** Learner creates two snippets (`brand_voice`, `safety_rules`) and refactors Otto's prompt to reference them. Check validates snippet creation and that Otto's prompt references them.
 
 **Verification steps Claude Code performs:**
 - For each challenge: run setup, then run solve, verify check passes against the solved state
-- Web-search the current AI Configs docs to ground UI instructions; mark uncertain UI steps with `<!-- VERIFY: ... -->` comments per `CLAUDE.md`
+- Web-search the current AgentControl docs to ground UI instructions; mark uncertain UI steps with `<!-- VERIFY: ... -->` comments per `CLAUDE.md`
 - List expected screenshots in each challenge folder's `assets/` references
 
 **Operator verification (after Claude Code declares phase done):**
@@ -197,7 +203,7 @@ Each phase has:
 - `instruqt/07-trust-but-verify/` full challenge
 - `terraform/challenge-07/` Terraform module that creates:
   - The Nova Pro variation on Otto's config, with a deliberately poor prompt (specific text in `NARRATIVE.md`)
-  - The judge AI Config (separate config with its own prompt evaluating responses for brand-voice adherence)
+  - The judge Config (separate config with its own prompt evaluating responses for brand-voice adherence)
   - A custom metric tied to the judge's score output
   - The guarded rollout configuration on Otto's main config, watching the metric
 - `app/server.py` updates: after each Otto response, call the judge config, evaluate the response, and emit a metric event with the judge's score
@@ -236,7 +242,7 @@ Each phase has:
 **Deliverables:**
 - `instruqt/00-welcome/assignment.md` — orient the learner, introduce ToggleWear and Otto. No task. May have a "click Next to continue" instruction.
 - `instruqt/04-quiz-configs-and-snippets/assignment.md` — quiz, `type: quiz` in front-matter, 1-3 questions on challenges 01-03
-- `instruqt/08-wrap-up/assignment.md` — final summary + 1-3 quiz questions covering the whole track, plus a "thanks for completing" close. May have suggested next steps (e.g. "explore the AI Configs docs" with a link).
+- `instruqt/08-wrap-up/assignment.md` — final summary + 1-3 quiz questions covering the whole track, plus a "thanks for completing" close. May have suggested next steps (e.g. "explore the AgentControl docs" with a link).
 
 **Specific notes:**
 - Quiz front-matter format: see reference track's `08-test-your-knowledge` example. `answers` list, `solution` is a list of indices into `answers`.
@@ -281,8 +287,8 @@ Each phase has:
 Recorded by Claude Code on 2026-05-15.
 
 - **Current `launchdarkly/launchdarkly` Terraform provider version**: `2.29.0` (released 2026-05-08). Pinned in `terraform/student-bootstrap/versions.tf` as `~> 2.29`.
-- **AI Configs resources supported by Terraform provider**: `launchdarkly_ai_config` (modes: `completion`, `agent`, `judge`), `launchdarkly_ai_config_variation` (with inline `messages`, `model`, and `model_config_key`), `launchdarkly_ai_tool`, `launchdarkly_model_config`, `launchdarkly_metric`. AI Configs resources first shipped in provider v2.28.0 (2026-04-20).
-  - **Gaps** that will need REST-API fallback via `null_resource` + `local-exec` `curl`: prompt snippets (Phase 4, challenge 03), AI Config targeting rules (Phase 5, challenge 05), guarded rollouts on AI Configs (Phase 7, challenge 07). The MCP tools `update-ai-config-targeting-rules`, `update-ai-config-rollout`, and `update-ai-config-individual-targets` confirm the REST endpoints exist.
+- **Config resources supported by Terraform provider**: `launchdarkly_ai_config` (modes: `completion`, `agent`, `judge`), `launchdarkly_ai_config_variation` (with inline `messages`, `model`, and `model_config_key`), `launchdarkly_ai_tool`, `launchdarkly_model_config`, `launchdarkly_metric`. Config resources first shipped in provider v2.28.0 (2026-04-20). (Resource names still carry the legacy `ai_config` prefix.)
+  - **Gaps** that will need REST-API fallback via `null_resource` + `local-exec` `curl`: prompt snippets (Phase 4, challenge 03), Config targeting rules (Phase 5, challenge 05), guarded rollouts on Configs (Phase 7, challenge 07). The MCP tools `update-ai-config-targeting-rules`, `update-ai-config-rollout`, and `update-ai-config-individual-targets` confirm the REST endpoints exist.
 - **Current `ldai` (launchdarkly-server-sdk-ai) Python version**: `0.20.1` (released 2026-05-14). Requires Python ≥3.10. Will be pinned in `app/requirements.txt` in Phase 3.
 - **Current `launchdarkly-server-sdk` Python version**: `9.15.0` (released 2026-02-10). Requires Python 3.10+. Will be pinned in `app/requirements.txt` in Phase 3.
 - **VM Python**: system `python3` from Ubuntu 24.04 noble — currently **3.12**. Both LD SDKs require ≥3.10. (Initial plan called for 3.11 via apt; noble doesn't ship 3.11, and 3.12 satisfies the constraint, so we use the system python.)
