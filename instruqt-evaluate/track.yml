@@ -1,0 +1,42 @@
+slug: ld-agentcontrol-evaluate
+id: p35zwti57hk8
+title: AgentControl Workshop — Evaluate
+teaser: Test Otto offline, judge him in production, experiment on live traffic, and
+  protect customers with guarded rollouts and adaptive switching.
+description: |-
+  Track 2 of the AgentControl workshop. Continuing where the
+  Build track left off, you'll exercise the full evaluation
+  surface of AgentControl: offline evaluations against a
+  golden dataset, online judges (both built-in and custom),
+  prompt experiments on live lab traffic, guarded rollouts
+  that auto-revert regressions, and an in-app adaptive-
+  switching loop. By the end Otto is measured, judged,
+  experimented on, and protected by every safety net the
+  product offers.
+icon: https://launchdarkly.com/favicon-dark-mode.png
+tags:
+- bedrock
+- ai
+- agentcontrol
+- evaluation
+owner: launchdarkly
+developers:
+- kcochran@launchdarkly.com
+- sattensil@launchdarkly.com
+show_timer: true
+idle_timeout: 1200
+timelimit: 7200
+lab_config:
+  extend_ttl: 3600
+  sidebar_enabled: true
+  feedback_recap_enabled: true
+  feedback_tab_enabled: false
+  loadingMessages: true
+  theme:
+    name: modern-dark
+  override_challenge_layout: false
+  hideStopButton: false
+  default_layout: AssignmentRight
+  default_layout_sidebar_size: 25
+checksum: ""
+enhanced_loading: false
