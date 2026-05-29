@@ -192,7 +192,7 @@ exit 0
 
 ### `track.yml` and `config.yml`
 
-`config.yml` declares the virtual browser (the LaunchDarkly IdP simulator lambda), the VM, and required secrets. We need `AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID`, `LAUNCHDARKLY_ACCESS_TOKEN`, and likely an `AWS_REGION` env. Mirror the reference track's structure.
+`config.yml` declares the virtual browser (the LaunchDarkly IdP simulator lambda), the VM, and required secrets. We need `LAUNCHDARKLY_ACCESS_TOKEN` and `AWS_REGION`. AWS credentials come from a federated `BedrockProfile` set up at image-bake time (see `gcp-federation/`), so the static `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` secrets are no longer needed.
 
 `track.yml` declares slug, ID, title, teaser, description, owner, time limit (7200 = 2hr), and lab config. Use `default_layout: AssignmentRight` and `default_layout_sidebar_size: 25` to match the reference.
 
