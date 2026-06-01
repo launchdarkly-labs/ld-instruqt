@@ -17,11 +17,12 @@ PROMPT=$(curl -s -X GET \
   -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" \
   | jq -r '.messages[]? | select(.role=="system") | .content')
 
-# VERIFY: the snippet-reference token may be `{{ldsnippet.brand-voice}}` or a
-# different syntax. The check below matches by snippet key appearing in the
-# prompt text — if the real LD syntax embeds the snippet by key, the key will
-# still appear; if it inlines the snippet text instead, the brand-voice and
-# safety-rules KEYWORDS still appear so this remains a useful check.
+# The canonical snippet-reference syntax is `{{snippet.<key>#<version>}}`,
+# but the LD UI's "Load snippet" button may inline the snippet's text
+# rather than insert the template token. We just look for the snippet key
+# substring — it lands either way (the key appears in the markup if the
+# token is inserted, and "brand-voice"/"safety-rules" appear in the
+# inlined text either way since those words live inside the snippets).
 if ! echo "$PROMPT" | grep -q 'brand-voice'; then
   fail-message "Otto's prompt doesn't reference the **brand-voice** snippet. Insert it where Otto's personality used to be."
   exit 1

@@ -283,7 +283,9 @@ Version-pinned. Whether omitting the version resolves to "latest" is not documen
 
 **Decision:** Phase 7's setup pre-builds everything *except* the guarded rollout itself: the Nova Pro Stiff variation, the judge Config + metric, the server-side judge integration, and a low-rate background traffic generator. The learner configures the guarded rollout in the LD UI as the lab's actionable centerpiece.
 
-**Rationale:** Two reasons. First, LaunchDarkly's REST API for starting a guarded rollout isn't publicly documented at authoring time — the OpenAPI spec includes the `GuardedReleaseConfig` schema and `ReleaseGuardianConfiguration` but no path uses them in the spec. Reverse-engineering the UI's API calls was deferred. Second, configuring the rollout in the UI *is* the most important learning moment of the track — making the learner do it themselves reinforces the workshop's main lesson.
+**Rationale:** Two reasons. First, LaunchDarkly's REST API for starting a guarded rollout was not publicly documented at authoring time. Second, configuring the rollout in the UI *is* the most important learning moment of the track — making the learner do it themselves reinforces the workshop's main lesson.
+
+**Update (2026-05-29, Phase 0 of Track 2 / Evaluate):** The REST surface IS now documented — `start-guarded-rollout` is a published LD MCP tool with `testVariationId`, `controlVariationId`, `stages` (rolloutWeight + monitoringWindowMilliseconds), and `metrics` (with `regressionThreshold` and `onRegression: {notify, rollback}`). The first part of the rationale is obsolete. The second part — keeping the rollout learner-driven for pedagogical reasons — still stands. Evaluate's ch07 (which lifts this challenge from Build) continues to have the learner start the rollout in the UI; the API existence just gives presenters a scripted fallback rather than forcing a UI-only path.
 
 **Side script:** `traffic-generator/sabotage.py` exists as a presenter escape hatch — emits low judge scores directly via `ld_client.track()` to force a regression detection when organic background traffic is too slow.
 

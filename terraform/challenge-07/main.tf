@@ -14,10 +14,12 @@
 #     the Terraform provider's launchdarkly_ai_config resource can't update
 #     a resource it doesn't manage).
 #
-# VERIFY: the LD REST API for *starting* a guarded rollout isn't publicly
-# documented. The lab has the learner start the rollout from the LD UI on
-# the Targeting tab. If a later phase pins down the API, this module can
-# pre-start the rollout.
+# The lab has the learner start the rollout from the LD UI on the
+# Targeting tab — that's the pedagogical centerpiece of the challenge,
+# not an API workaround. The REST surface (start-guarded-rollout) is
+# documented via the LD MCP tool of the same name and could be used to
+# pre-start the rollout for Skip cases, but keeping it UI-driven
+# preserves the lab's narrative.
 
 locals {
   stiff_prompt = "You are a customer service representative. Please assist customers with their inquiries in a professional and formal manner. Always greet the customer formally, provide thorough explanations, and conclude each response with a formal sign-off. Maintain a corporate tone at all times."

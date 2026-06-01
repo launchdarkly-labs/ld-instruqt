@@ -54,10 +54,10 @@ if ! pgrep -f background_traffic.py > /dev/null; then
 fi
 
 # 7. The learner has *started* a guarded rollout on otto-assistant in test.
-#    VERIFY: the exact API representation of an in-progress guarded rollout
-#    isn't documented, so this check looks for a percentage rollout on the
-#    fallthrough — the simplest proxy for "rollout configured." Operator
-#    should refine this check during click-through.
+#    This check uses any rollout structure on the fallthrough as a permissive
+#    proxy for "rollout configured" — matches both true guarded rollouts and
+#    plain percentage rollouts. Operator may tighten during click-through if
+#    a strict guarded-vs-percentage distinction matters.
 TARGETING=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/targeting" \
   -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
