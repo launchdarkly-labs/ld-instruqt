@@ -42,7 +42,7 @@ This challenge adds a second judge that scores **accuracy against the product ca
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. Navigate to **AI Configs → Snippets** and click **Create snippet**.
+1. Navigate to **Configs → Snippets** and click **Create snippet**.
 2. For **Name**:
 ```text
 Product catalog

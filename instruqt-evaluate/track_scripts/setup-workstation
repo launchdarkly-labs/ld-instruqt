@@ -6,7 +6,7 @@
 # Otto's post-Build state by applying Build's solve modules (challenges 01,
 # 02, 03, 05, 06) and the Challenge-01 server.py patch. The learner arrives
 # in Evaluate with the same Otto that a Build-completing learner would have:
-# wired to the AI Config, on-brand via the brand-voice + safety-rules
+# wired to the Config, on-brand via the brand-voice + safety-rules
 # snippets, premium variation in place, monitoring view populated.
 
 set -euo pipefail

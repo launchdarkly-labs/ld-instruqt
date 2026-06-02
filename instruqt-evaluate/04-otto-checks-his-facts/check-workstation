@@ -15,7 +15,7 @@ SNIP_STATUS=$(curl -s -o /dev/null -w '%{http_code}' \
   "${API}/projects/${LD_PROJECT_KEY}/ai-configs/prompt-snippets/product-catalog" \
   -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
 if [ "$SNIP_STATUS" != "200" ]; then
-  fail-message "The **product-catalog** snippet doesn't exist yet. Create it from **AI Configs → Snippets** with the catalog content from the lab."
+  fail-message "The **product-catalog** snippet doesn't exist yet. Create it from **Configs → Snippets** with the catalog content from the lab."
   exit 1
 fi
 

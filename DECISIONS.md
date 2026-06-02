@@ -342,3 +342,50 @@ AgentControl Configs are mode-permanent — once created in `completion` mode, a
 1. It breaks Build/L1's "Otto is grown" wrap-up arc retroactively.
 2. It tries to evade the mode-permanence rule rather than teach it.
 3. The Concierge-team framing turns mode-permanence into a teachable moment (here's why we built a new system instead of upgrading Otto's Config in place).
+
+---
+
+## Custom judges score 0.0–1.0, not 1–5 (2026-06-01)
+
+**Decision:** Every custom judge in Evaluate scores responses on a 0.0–1.0 scale. The score parsing in each judge's server.py paste reads `float(text.split()[0])` with a try/except fallback. The legacy Build ch07 used a 1–5 integer scale; that was changed when ch07 lifted into Evaluate.
+
+**Rationale:**
+- LD's built-in judges (Accuracy, Relevance, Toxicity) score 0.0–1.0. Mixing 1–5 custom judges with 0.0–1.0 built-ins in the same monitoring view was inconsistent.
+- Float scoring gives the LLM judge more resolution to express degrees of correctness ("borderline" = 0.5) without retraining learners on what a "3" means versus a "4".
+- The threshold values for guarded rollouts and adaptive switching are simpler in 0.0–1.0 ("watch for the mean dropping below 0.5") than they would be in 1–5 ("below 3.0").
+
+**Side effect:** The legacy `traffic-generator/background_traffic.py` and `sabotage.py` were updated during Phase 6 of `PHASES-evaluate.md` to emit floats instead of ints, and to use the new `otto-brand-voice-score` metric key instead of the legacy `otto-quality-score`.
+
+---
+
+## Snippet-as-data: snippets hold structured content, not just voice (2026-06-01)
+
+**Decision:** Evaluate Challenge 04 puts the ToggleWear product catalog inside a `product-catalog` snippet. The claim-accuracy judge's prompt references it via `{{snippet.product-catalog#1}}` so the same catalog text drives the judge's ground truth. Adding or changing a product means editing one snippet.
+
+**Rationale:**
+- The LD snippets docs frame snippets as "tone, formatting, or governance language" — voice-flavored. Using a snippet for *data* (a structured product list) is a stretch of the apparent design intent but works in practice; the snippet is just text inserted into a prompt at evaluation time.
+- The "one source of truth for the catalog" property is valuable beyond the lab: in production, adding a product becomes a single-snippet edit rather than coordinated changes across multiple prompt variations and grading configs.
+- This pattern composes with the brand-voice snippet's reuse in ch03 — both demonstrate that a snippet drives both "what Otto says" *and* "what we measure" if you reference it from both sides.
+
+**Trade-offs accepted:**
+- Catalog content lives in two places — the snippet (for the judge's ground truth) and the app's `static/index.html` (for the actual storefront display). They could drift. For the workshop's ~30-row catalog this is acceptable; a production app would derive both from a single source.
+
+---
+
+## Three safety nets, three timescales (2026-06-01)
+
+**Decision:** Evaluate teaches three distinct AI-safety mechanisms across challenges 06–08, framed by the timescale at which they react:
+
+| Timescale | Mechanism | Challenge |
+|---|---|---|
+| Release time | Guarded rollout (LD watches a metric while ramping; rolls back on regression) | ch07 |
+| Request time (between requests) | In-app adaptive loop (rolling window + REST PATCH on the targeting rule) | ch08 |
+| Per request (synchronous) | Self-healing judge-then-regenerate | Coordinate / Track 3 |
+
+**Rationale:**
+- These three mechanisms are easy to conflate. Naming the timescale makes the distinction concrete. The wrap-up quiz tests the release-vs-between-requests boundary directly.
+- The adaptive-switching pattern in ch08 isn't a packaged LD feature — it's an application-level loop the operator wires using documented SDK + REST primitives. Teaching it explicitly closes a real gap: learners often try to use guarded rollouts as request-time controllers, which doesn't work.
+- Self-healing belongs in Coordinate (L3) because the per-request fallback shape requires the judge to be invoked synchronously inside the request handler — natural fit with the agent-graph rewriter node where a brand-voice check before sending the response is the obvious wiring.
+
+**Trade-offs accepted:**
+- The lab introduces three distinct in-app generators (`realchat_traffic.py`, `experiment_traffic.py`, `background_traffic.py`) to drive each mechanism's lab — each setup-workstation swaps to the right one for the challenge. Slight operational complexity in exchange for each lab having appropriate signal characteristics.
