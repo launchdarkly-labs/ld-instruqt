@@ -1,6 +1,6 @@
 ---
 slug: how-is-otto-doing
-id: yx72jfignrey
+id: quemgqcw6u62
 type: challenge
 title: How is Otto Doing?
 teaser: Otto is live. Time to look at the data. Tokens, latency, and learner feedback,
@@ -11,16 +11,16 @@ notes:
     have been chatting with Otto and rating his answers. In this challenge you'll
     explore the AgentControl monitoring view and see how Otto's variations stack up.
 tabs:
-- id: ppkjnwmekdtl
+- id: nz8guwejvqib
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: sghestrw5czf
+- id: gsnr8qvrfphq
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: ehfwvayaywjc
+- id: aekuh5pojiiu
   title: Code Editor
   type: service
   hostname: workstation
@@ -40,15 +40,15 @@ The point of this challenge is to *look*. You're not going to change anything. Y
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. Go to **AI** → **Configs** → **Otto Assistant**.
+1. Go to **Configs** → **Otto Assistant**.
 2. Click the **Monitoring** tab.
-3. Set the environment filter to **test**.
+3. Set the environment filter to **Test**.
 
 You should see a populated dashboard. Take a minute to look at it before reading further.
 
 # Things to look for
 
-The monitoring view shows your AgentControl's performance broken down by variation. Compare **Otto v1 (Born)** to **Otto v2 (Premium)**:
+The monitoring view shows your AgentControl's performance broken down by variation. Compare **Otto (Born)** to **Otto (Premium)**:
 
 - **Generations**: how many times each variation was served. Born will be busier because most simulated shoppers were free-tier.
 - **Input / output tokens**: tokens by variation. Premium (Sonnet) writes longer answers, so output tokens are higher.
@@ -63,4 +63,4 @@ The monitoring view shows your AgentControl's performance broken down by variati
 
 # What happens next
 
-Otto is healthy in `test`. The next challenge is the scary one: a new model variation is going live, and we want AgentControl to *automatically pull the plug* if quality drops. Click **Check** when you're satisfied with what you see here.
+Otto is healthy in `Test`. The next challenge is the scary one: a new model variation is going live, and we want AgentControl to *automatically pull the plug* if quality drops. Click **Check** when you're satisfied with what you see here.

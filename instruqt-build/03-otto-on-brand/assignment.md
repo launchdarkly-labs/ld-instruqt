@@ -1,6 +1,6 @@
 ---
 slug: otto-on-brand
-id: kkfypozqvsxw
+id: lqyqqeh3d5ia
 type: challenge
 title: Otto On-Brand at Scale
 teaser: Otto's prompt is getting long. Factor reusable brand voice and safety rules
@@ -12,16 +12,16 @@ notes:
     in one place and have every AgentControl Config that references them pick up the
     change.
 tabs:
-- id: detd4ug6thh5
+- id: xlcae0ohxvxy
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: 17qxsshhwap1
+- id: efad9asy4vxj
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: 7pdwwcpdtmcx
+- id: x9u5efydgakl
   title: Code Editor
   type: service
   hostname: workstation
@@ -47,7 +47,7 @@ Then we'll refactor Otto's prompt to use them.
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. From the left-hand navigation, go to **AI** → **Library**, then click **Snippets** from the upper menu.
+1. From the left-hand navigation, go to **Library**, then click **Snippets** from the upper menu.
 2. Click **Create snippet**.
 3. For **Name**, enter:
 ```text
@@ -84,7 +84,7 @@ Don't make up prices, sizes, or policies. If you don't know, say so and suggest 
 
 # Refactor Otto's prompt
 
-1. Navigate back to **Configs** → **Otto Assistant** → **Otto v1 (Born)**.
+1. Navigate back to **Configs** → **Otto Assistant** → **Otto (Born)**.
 2. In the **System** prompt text area, clear out the existing text.
 3. Click **Load snippet**, and select **Brand voice**.
 4. Below the `{{snippet.brand-voice#1}}` markup that the editor inserts, enter the following:

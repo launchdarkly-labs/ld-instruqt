@@ -1,27 +1,27 @@
 ---
 slug: a-vs-b
-id: r0tvyf5i3rff
+id: 5qur6sxcwjlz
 type: challenge
 title: A vs. B
-teaser: Run a prompt experiment comparing two Otto variations on live traffic,
-  read the results panel, and promote the winner.
+teaser: Run a prompt experiment comparing two Otto variations on live traffic, read
+  the results panel, and promote the winner.
 notes:
 - type: text
-  contents: You've measured Otto in production (built-in + custom judges) and
-    you've measured him offline (the dataset eval). What you haven't done yet
-    is compare two versions of Otto head-to-head on real traffic. That's what
-    experiments are for — split traffic, watch a metric, promote the winner.
+  contents: You've measured Otto in production (built-in + custom judges) and you've
+    measured him offline (the dataset eval). What you haven't done yet is compare
+    two versions of Otto head-to-head on real traffic. That's what experiments are
+    for — split traffic, watch a metric, promote the winner.
 tabs:
-- id: zmgnl6gntfvo
+- id: ichjegaatnae
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: r2gjohhzi92y
+- id: p3mma8zpqvrg
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: 81a8wjbxfnpq
+- id: loi0ct9gsvcw
   title: Code Editor
   type: service
   hostname: workstation

@@ -3,7 +3,7 @@
 # 1. The otto-assistant AI Config exists.
 CONFIG=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant" \
-  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}")
 
 if [ "$(echo "$CONFIG" | jq -r '.key // "null"')" = "null" ]; then
   fail-message "The Otto Assistant AI Config has not been created yet. Follow the steps under **Create Otto's AI Config**."
@@ -16,7 +16,7 @@ if [ -z "$VARIATION_MODEL" ]; then
   fail-message "Otto's first variation is missing. Make sure you created the variation named **Otto v1 (Born)** with key **otto-born**."
   exit 1
 fi
-if [ "$VARIATION_MODEL" != "Anthropic.claude-haiku-4-5" ]; then
+if [ "$VARIATION_MODEL" != "Bedrock.anthropic.claude-haiku-4-5-20251001-v1:0" ]; then
   fail-message "Otto's variation isn't using Claude Haiku 4.5. Pick **Anthropic Claude Haiku 4.5** as the model."
   exit 1
 fi
@@ -32,7 +32,7 @@ fi
 # 4. Targeting in `test` env points at otto-born (not the default `disabled` variation).
 TARGETING=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/targeting" \
-  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}")
 BORN_NAME=$(echo "$CONFIG" | jq -r '.variations[]? | select(.key=="otto-born") | .name')
 FALLTHROUGH_IDX=$(echo "$TARGETING" | jq -r '.environments.test.fallthrough.variation // empty')
 FALLTHROUGH_NAME=$(echo "$TARGETING" | jq -r ".variations[${FALLTHROUGH_IDX}].name // empty")

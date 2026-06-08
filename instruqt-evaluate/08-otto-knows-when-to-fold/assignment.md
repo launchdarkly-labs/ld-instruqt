@@ -1,30 +1,29 @@
 ---
 slug: otto-knows-when-to-fold
-id: 92c0i2x8rnv1
+id: fkopss12xbgi
 type: challenge
 title: Otto Knows When to Fold
-teaser: Wire an in-app loop that flips Otto's targeting to a safe variation
-  when judge scores tank — request-time protection, no rollout required.
+teaser: Wire an in-app loop that flips Otto's targeting to a safe variation when judge
+  scores tank — request-time protection, no rollout required.
 notes:
 - type: text
-  contents: Guarded rollouts protect Otto at release time — they catch a
-    regression before it reaches 100% of traffic. But what if a regression
-    sneaks through, or a model degrades gradually, or you want a faster
-    response than a rollout's monitoring window? This challenge adds a
-    request-time safety net — a small loop in the app that watches the
-    brand-voice score and flips the fallthrough to a safe variation when
-    things go sideways.
+  contents: Guarded rollouts protect Otto at release time — they catch a regression
+    before it reaches 100% of traffic. But what if a regression sneaks through, or
+    a model degrades gradually, or you want a faster response than a rollout's monitoring
+    window? This challenge adds a request-time safety net — a small loop in the app
+    that watches the brand-voice score and flips the fallthrough to a safe variation
+    when things go sideways.
 tabs:
-- id: 08q1mowldm7h
+- id: zgxams3ntxzb
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: o5aerq6bmzro
+- id: hpelrrybsjag
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: ymca962znfno
+- id: jj25c7jkiout
   title: Code Editor
   type: service
   hostname: workstation

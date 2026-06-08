@@ -1,6 +1,6 @@
 ---
 slug: otto-is-born
-id: kgkfib8ssadj
+id: 6pn3ey5dbzmb
 type: challenge
 title: Otto is Born
 teaser: Create Otto's first AgentControl Config and wire him into the ToggleWear app.
@@ -11,16 +11,16 @@ notes:
     code that bring him to life. By the end of this challenge, Otto will say his first
     words from the ToggleWear storefront.
 tabs:
-- id: qlws5rkybu2x
+- id: ftikmtel9qfo
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: zv3v3yux1lxa
+- id: yapitnqzvza4
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: ckn1tprhy7xi
+- id: wiby4zdkume6
   title: Code Editor
   type: service
   hostname: workstation
@@ -45,18 +45,19 @@ By the end of this challenge:
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. From the left-hand navigation, click **Configs**.
-2. Click **Create config** in the upper right.
-3. For **Name**, enter:
+1. From the left-hand navigation, where you see the **Code | Agents** selector, click Agents
+2. Under Agents, click **Configs**.
+3. Click **Create config** in the upper right.
+4. For **Name**, enter:
 ```text
 Otto Assistant
 ```
-4. For **Key**, the UI should pre-fill `otto-assistant`. Confirm or set it to:
+5. For **Key**, the UI should pre-fill `otto-assistant`. Confirm or set it to:
 ```text
 otto-assistant
 ```
-5. For **Mode**, select **Completion**.
-6. Click **Create**.
+6. For **Mode**, select **Completion**.
+7. Click **Create**.
 
 ![Create Config](../assets/ch01-create-config.png)
 
@@ -67,31 +68,31 @@ The Config exists but has no variations yet — nothing to serve. Add the "born"
 1. You now on the Config detail page, adding the first variation.
 2. For **Name**, enter:
 ```text
-Otto v1 (Born)
+Otto (Born)
 ```
 3. For **Key**, confirm or enter:
 ```text
 otto-born
 ```
-4. Under **Model**, pick **Anthropic** --> **claude-haiku-4-520251001** from the list.
+4. Under **Model**, pick **Bedrock** --> **anthropic.claude-haiku-4-5-20251001-v1:0** from the list.
 5. In the prompt text area, select **System**, and add this content in the prompt:
 ```text
 You are a customer service assistant for ToggleWear, an online retailer. Answer questions from customers about products and store policies. Be accurate and concise.
 ```
 6. Click **Review and save**, then **Save changes**.
 
-# Turn Otto on in `test`
+# Turn Otto on in `Test`
 
-By default Otto's `test` environment is serving the placeholder "disabled" variation. Switch it to the Born variation we just created.
+By default Otto's `Test` environment is serving the placeholder "disabled" variation. Switch it to the Born variation we just created.
 
 1. Click the **Targeting** tab.
-2. Make sure the environment selector reads **test**.
-3. Under **Default rule**, click **Edit** and select **Otto v1 (Born)**.
+2. Make sure the environment selector reads **Test**.
+3. Under **Default rule**, click **Edit** and select **Otto (Born)**.
 4. Click **Review and save**, then **Save changes**.
 
 # Wire Otto into the app
 
-Open the [Code Editor](#tab-2) tab. Open `app/server.py`.
+Open the [Code Editor](#tab-2) tab. Open `server.py`.
 
 Find the block marked:
 
@@ -161,7 +162,10 @@ Replace **everything between the opening marker and the** `# ─── End Chall
     # ─── Challenge 07 judge injects below this marker ──────────────────────
 ```
 
-Save the file. The ToggleWear service auto-reloads.
+Save the file (⌘ + S/Ctrl + S). The ToggleWear service auto-reloads.
+
+Read through the block of code to note how the LaunchDarkly AI SDK gets the model
+configuration, then passes that on to the Bedrock SDK.
 
 # Say hi to Otto
 

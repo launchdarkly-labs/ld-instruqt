@@ -1,29 +1,28 @@
 ---
 slug: trust-but-verify
-id: ruzv8o6xo9vb
+id: ghx4xfduw9h3
 type: challenge
 title: Trust But Verify
-teaser: Roll out a risky new model behind a guarded rollout backed by the
-  brand-voice judge — watch it auto-revert when quality drops.
+teaser: Roll out a risky new model behind a guarded rollout backed by the brand-voice
+  judge — watch it auto-revert when quality drops.
 notes:
 - type: text
-  contents: A new model came in from the vendor — Amazon Nova Pro. Marketing
-    wants to try it. You want to try it too, but only if it doesn't make
-    Otto sound off-brand. This is exactly what guarded rollouts are for —
-    ship the change behind a metric, let it watch for regression, and
-    automatically roll back if quality drops. The brand-voice judge you
-    built in Challenge 03 is the metric.
+  contents: A new model came in from the vendor — Amazon Nova Pro. Marketing wants
+    to try it. You want to try it too, but only if it doesn't make Otto sound off-brand.
+    This is exactly what guarded rollouts are for — ship the change behind a metric,
+    let it watch for regression, and automatically roll back if quality drops. The
+    brand-voice judge you built in Challenge 03 is the metric.
 tabs:
-- id: b9pm28i81ei9
+- id: dkhfq60shwai
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: szc9lpjjxamd
+- id: 9cdmd2dpvhfc
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: 2y7twiymg15s
+- id: w9h19hyf1itj
   title: Code Editor
   type: service
   hostname: workstation

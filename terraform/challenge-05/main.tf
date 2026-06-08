@@ -1,6 +1,6 @@
 # End-state for Challenge 05 — "Otto for everyone".
 #
-# Adds a premium-tier variation (Sonnet 4.5) and a targeting rule that routes
+# Adds a premium-tier variation (Sonnet 4.6) and a targeting rule that routes
 # contexts with `tier: "premium"` to it. Free-tier shoppers keep getting the
 # Haiku-backed Otto from earlier challenges.
 #
@@ -8,8 +8,9 @@
 # otto-born as the test fallthrough, and brand-voice + safety-rules snippets
 # exist in the project.
 #
-# Anthropic.claude-sonnet-4-5 is a GLOBAL model config (shipped by LD), so
-# unlike Haiku we don't have to create it ourselves.
+# Anthropic.claude-sonnet-4-6 is a GLOBAL model config (shipped by LD), so
+# unlike Haiku we don't have to create it ourselves. Must match the model
+# the learner picks in the UI (the assignment specifies claude-sonnet-4-6).
 
 locals {
   premium_prompt = <<-PROMPT
@@ -26,7 +27,7 @@ resource "launchdarkly_ai_config_variation" "otto_premium" {
   config_key       = "otto-assistant"
   key              = "otto-premium"
   name             = "Otto v2 (Premium)"
-  model_config_key = "Anthropic.claude-sonnet-4-5"
+  model_config_key = "Anthropic.claude-sonnet-4-6"
 
   messages {
     role    = "system"

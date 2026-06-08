@@ -1,6 +1,6 @@
 ---
 slug: otto-for-everyone
-id: hadihgfs085x
+id: g30fyyv1yqbx
 type: challenge
 title: Otto for Everyone
 teaser: Free shoppers and premium shoppers want different things. Give them different
@@ -11,16 +11,16 @@ notes:
     on the site — Otto should be no exception. In this challenge you'll add a second
     variation backed by a more capable model, then target it to premium shoppers.
 tabs:
-- id: a2h2cnix35xw
+- id: xdd3ix1smwzk
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: 5qjvd5b0htc7
+- id: mvtzoyp0p2v9
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: jfhxfxbweaqh
+- id: h9jtwghly3x1
   title: Code Editor
   type: service
   hostname: workstation
@@ -42,25 +42,26 @@ We're going to:
 
 # Add the premium variation
 
-Open the [LaunchDarkly](#tab-0) tab. Go to **AI** → **Configs** → **Otto Assistant**.
+Open the [LaunchDarkly](#tab-0) tab. Go to **Configs** → **Otto Assistant**.
 
 1. Click **Add variation**.
 2. For **Name**, enter:
 ```text
-Otto v2 (Premium)
+Otto (Premium)
 ```
 3. For **Key**, confirm or enter:
 ```text
 otto-premium
 ```
-4. Under **Model**, pick **Anthropic** → **claude-sonnet-4-6**.
-5. In prompt text area, make sure **System** is selected, then click **Load snippet** and select **Brand voice**.
-6. Below that, enter the following text:
+4. Under **Model**, pick **Bedrock** → **anthropic.claude-sonnet-4-6**.
+5. In prompt text area, make sure **System** is selected and clear the prompt.
+6. Click **Load snippet** and select **Brand voice**.
+7. On the next line, enter the following text:
 
 ```text
 You work at ToggleWear and you're talking to a premium customer. Take a little more time with them. Offer thoughtful recommendations, mention complementary items when relevant, and share interesting product details (materials, care, the story behind a design). You can be a bit warmer and more conversational.
 ```
-7. Click **Load snippet** and select **Safety rules**.
+7. Go to the next line, click **Load snippet** and select **Safety rules**.
 8. Click **Review and save**, then **Save changes**.
 
 Note what we just did: the premium prompt **reuses** the `brand-voice` and `safety-rules` snippets from Challenge 03. If marketing tweaks the brand voice tomorrow, both variations pick it up automatically.
@@ -69,14 +70,14 @@ Note what we just did: the premium prompt **reuses** the `brand-voice` and `safe
 
 Click the **Targeting** tab. Make sure the environment selector reads **test**.
 
-1. Above the **Default rule**, click ** + ** and select **Build a custom rule**.
+1. Above the **Default rule**, click **+** and select **Build a custom rule**.
 2. Build the clause:
 	1. Context kinds: **user**
 	2. Attribute: **tier**
 	3. Operator: **is one of**
 	4. Values: **premium** _&lt;ENTER&gt;_
-3. For the variation dropdown, select **Otto v2 (Premium)**.
-4. Leave the **Default rule** as **Otto v1 (Born)** — free shoppers and anyone without a tier still get the Haiku Otto.
+3. For the variation dropdown, select **Otto (Premium)**.
+4. Leave the **Default rule** as **Otto (Born)** — free shoppers and anyone without a tier still get the Haiku Otto.
 6. Click **Review and save**, then **Save changes**.
 
 # See it work
@@ -89,7 +90,7 @@ What's good for cold weather?
 ```
 Otto should be brief and friendly — that's the Haiku-backed Born variation.
 
-2. Close the chat. Change the dropdown to **Premium user**.
+2. Close the chat. At the top right of the page, change the dropdown to **Premium user**.
 
 3. Re-open the chat (or refresh the page) and ask the same question. Otto should answer at more length, mention complementary items, and feel a bit warmer — that's the Sonnet-backed Premium variation, served because the LaunchDarkly context now has `tier: "premium"` and the rule you just added matches it.
 

@@ -1,28 +1,28 @@
 ---
 slug: otto-on-the-bench
-id: itz6pvjumki6
+id: hvxtrzt1nel4
 type: challenge
 title: Otto on the Bench
-teaser: Run an offline evaluation against a golden dataset of customer questions
-  to see how Otto performs before any production traffic.
+teaser: Run an offline evaluation against a golden dataset of customer questions to
+  see how Otto performs before any production traffic.
 notes:
 - type: text
-  contents: Otto is built and on-brand, but how do we know he's good? In this
-    challenge you'll run him through 30 labeled customer questions, grade his
-    answers with an LLM-as-a-judge, and read the results to spot where he's
-    weak. Knowing where Otto slips is what makes everything that follows —
-    built-in judges, custom judges, experiments, guarded rollouts — useful.
+  contents: Otto is built and on-brand, but how do we know he's good? In this challenge
+    you'll run him through 30 labeled customer questions, grade his answers with an
+    LLM-as-a-judge, and read the results to spot where he's weak. Knowing where Otto
+    slips is what makes everything that follows — built-in judges, custom judges,
+    experiments, guarded rollouts — useful.
 tabs:
-- id: 3ner5juigklt
+- id: qhyrqbdxzwcm
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: wwid0mwirovu
+- id: l7zeajhisjha
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: bo38a97nsnvk
+- id: x4by7yxkmroz
   title: Code Editor
   type: service
   hostname: workstation

@@ -1,24 +1,23 @@
 ---
 slug: wrap-up
-id: 81bduqiqnjeb
+id: 4aqkbsucqgcl
 type: quiz
 title: Wrap-Up
 teaser: Otto is up and being watched. So are you.
 notes:
 - type: text
-  contents: You started with a placeholder line in server.py and ended with a
-    targeted, monitored AI assistant running in production. One last question
-    to close the loop, then you're done with Build.
+  contents: You started with a placeholder line in server.py and ended with a targeted,
+    monitored AI assistant running in production. One last question to close the loop,
+    then you're done with Build.
 answers:
-- The Python `launchdarkly-server-sdk-ai` package detects prompt edits on disk
-  and restarts the app.
-- LaunchDarkly evaluates the Config at runtime on every chat call, so prompts,
-  models, and targeting rules picked up from the UI take effect without a
-  redeploy.
-- The systemd service watches the LaunchDarkly UI over a websocket and rebuilds
-  the app when anything changes.
-- The ToggleWear server caches each variation's prompt on first use and never
-  reloads it.
+- The Python `launchdarkly-server-sdk-ai` package detects prompt edits on disk and
+  restarts the app.
+- LaunchDarkly evaluates the Config at runtime on every chat call, so prompts, models,
+  and targeting rules picked up from the UI take effect without a redeploy.
+- The systemd service watches the LaunchDarkly UI over a websocket and rebuilds the
+  app when anything changes.
+- The ToggleWear server caches each variation's prompt on first use and never reloads
+  it.
 solution:
 - 1
 difficulty: basic

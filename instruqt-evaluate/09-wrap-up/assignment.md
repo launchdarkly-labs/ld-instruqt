@@ -1,24 +1,22 @@
 ---
 slug: wrap-up
-id: xv6b6wm4yovq
+id: ucsbqsx1cmod
 type: quiz
 title: Wrap-Up
 teaser: Otto is measured, judged, experimented on, and guarded. So are you.
 notes:
 - type: text
-  contents: You started Evaluate with a working Otto and ended with three
-    safety nets running at three different timescales. One last question, then
-    on to Coordinate.
+  contents: You started Evaluate with a working Otto and ended with three safety nets
+    running at three different timescales. One last question, then on to Coordinate.
 answers:
-- A guarded rollout reacts on every request; adaptive switching reacts only at
-  release time.
-- They both react on every request — the only difference is which LaunchDarkly
-  surface each one uses.
-- A guarded rollout reacts at release time, while traffic is ramping; adaptive
-  switching reacts between requests in production, based on what the metric
-  is doing right now.
-- Adaptive switching is just an internal name for the same feature as a guarded
-  rollout — they're interchangeable.
+- A guarded rollout reacts on every request; adaptive switching reacts only at release
+  time.
+- They both react on every request — the only difference is which LaunchDarkly surface
+  each one uses.
+- A guarded rollout reacts at release time, while traffic is ramping; adaptive switching
+  reacts between requests in production, based on what the metric is doing right now.
+- Adaptive switching is just an internal name for the same feature as a guarded rollout
+  — they're interchangeable.
 solution:
 - 2
 difficulty: basic

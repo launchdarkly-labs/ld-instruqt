@@ -1,24 +1,22 @@
 slug: ld-agentcontrol-evaluate
-id: p35zwti57hk8
-title: AgentControl Workshop — Evaluate
-teaser: Test Otto offline, judge him in production, experiment on live traffic, and
-  protect customers with guarded rollouts and adaptive switching.
-description: |-
-  Track 2 of the AgentControl workshop. Continuing where the
-  Build track left off, you'll exercise the full evaluation
-  surface of AgentControl: offline evaluations against a
-  golden dataset, online judges (both built-in and custom),
-  prompt experiments on live lab traffic, guarded rollouts
-  that auto-revert regressions, and an in-app adaptive-
-  switching loop. By the end Otto is measured, judged,
-  experimented on, and protected by every safety net the
-  product offers.
+id: vadayhaofkmb
+title: Evaluate Your AI with AgentControl
+teaser: Otto is in production. Now make sure he stays good — with judges, experiments,
+  guarded rollouts, and adaptive switching.
+description: You've shipped an AI assistant. Now make sure it's any good — and stays
+  that way. In this track you'll grade Otto against a labeled offline dataset, attach
+  built-in judges, write two custom judges of your own (one whose grading criteria
+  comes from the same snippet that drives Otto's prompt), run a prompt experiment
+  on live traffic, configure a guarded rollout that catches a regression and auto-rolls
+  back, and wire an in-app adaptive loop that flips Otto's targeting between requests
+  when scores tank. Three safety nets at three different timescales — release-time,
+  request-time, and per-request.
 icon: https://launchdarkly.com/favicon-dark-mode.png
 tags:
 - bedrock
+- evaluation
 - ai
 - agentcontrol
-- evaluation
 owner: launchdarkly
 developers:
 - kcochran@launchdarkly.com
@@ -38,5 +36,5 @@ lab_config:
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 25
-checksum: ""
+checksum: "14333628405771156899"
 enhanced_loading: false

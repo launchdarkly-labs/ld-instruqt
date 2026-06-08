@@ -1,6 +1,6 @@
 ---
 slug: give-otto-personality
-id: skejfhwvjdtc
+id: v9y4epluve7s
 type: challenge
 title: Give Otto a Personality
 teaser: Otto sounds like a robot. Marketing has notes. Iterate on his prompt — no
@@ -12,16 +12,16 @@ notes:
     you'll do exactly that — change Otto's voice from the AgentControl UI and watch
     the running app pick it up.
 tabs:
-- id: 8kiofegocbwj
+- id: klhhhd0tv2xb
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: lcc1yzzdo5o4
+- id: rmbyld5gcvv5
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: uimvrfmfykfw
+- id: bijogcwliejp
   title: Code Editor
   type: service
   hostname: workstation
@@ -41,9 +41,9 @@ This is the whole point of AgentControl: the prompt is configuration, not code. 
 
 Open the [LaunchDarkly](#tab-0) tab.
 
-1. From the left-hand navigation, click **AI** --> **Configs**.
+1. From the left-hand navigation, click **Configs**.
 2. Click **Otto Assistant** to open the config.
-3. Expand the **Otto v1 (Born)** variation to edit it.
+3. Expand the **Otto (Born)** variation to edit it.
 4. In the prompt text area, make sure **System** is selected, and replace its content with:
 
 ```text

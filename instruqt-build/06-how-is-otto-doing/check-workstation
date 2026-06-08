@@ -5,9 +5,11 @@
 # that the monitoring view actually has data to look at; if the traffic
 # generator didn't land any events, the lab is broken.
 
+STARTTIME=$(echo $(($(date +%s%3N) - 3600000)))
+ENDTIME=$(date +%s%3N)
 METRICS=$(curl -s -X GET \
-  "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/metrics?env=test" \
-  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+  "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/metrics?from=$STARTTIME&to=$ENDTIME&env=test" \
+  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}" | sed 's/\\/\\\\/g')
 
 # The metrics response includes a `generations` field; we check that it's
 # non-zero so the monitoring view has something visible.

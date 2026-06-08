@@ -19,7 +19,7 @@ done
 REPO=/opt/ld/ai-configs-intro
 
 # 1. Bootstrap the LD project.
-cd "${REPO}/terraform/student-bootstrap"
+cd /opt/ld/terraform-ld-student
 echo "sandbox_id = \"${_SANDBOX_ID}\"" > terraform.tfvars
 terraform apply -auto-approve
 export LD_PROJECT_KEY="$(terraform output -json | jq -r '.students.value[0].project_key')"
@@ -66,4 +66,8 @@ done
 #    handler is wired to Otto (rather than the BEFORE-state stub).
 python3 "${REPO}/terraform/challenge-01/patch-server.py"
 
-service togglewear restart
+# First stop, then start the service. "restart" simply sends a "SIGHUP" 
+# which the app doesn't handle, so the new env vars aren't picked up until 
+# we do a full stop/start.
+service togglewear stop
+service togglewear start

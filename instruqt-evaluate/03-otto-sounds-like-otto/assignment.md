@@ -1,29 +1,29 @@
 ---
 slug: otto-sounds-like-otto
-id: 3xgudrgk6ohn
+id: cyaxabuoypah
 type: challenge
 title: Otto Sounds Like Otto
-teaser: Write a custom brand-voice judge whose criteria are driven by the same
-  brand-voice snippet Otto uses for his prompt.
+teaser: Write a custom brand-voice judge whose criteria are driven by the same brand-voice
+  snippet Otto uses for his prompt.
 notes:
 - type: text
-  contents: Built-in judges cover accuracy, relevance, and toxicity — useful,
-    but not specific to your brand. Otto needs to sound like Otto. In this
-    challenge you'll write a custom judge whose grading prompt pulls in the
-    L1 brand-voice snippet, so the same definition of "on-brand" drives both
-    Otto's behavior and his evaluation. Then you'll paste a small block into
-    the server so each Otto response gets graded automatically.
+  contents: Built-in judges cover accuracy, relevance, and toxicity — useful, but
+    not specific to your brand. Otto needs to sound like Otto. In this challenge you'll
+    write a custom judge whose grading prompt pulls in the L1 brand-voice snippet,
+    so the same definition of "on-brand" drives both Otto's behavior and his evaluation.
+    Then you'll paste a small block into the server so each Otto response gets graded
+    automatically.
 tabs:
-- id: uuucdcby7oxu
+- id: gz0wpcbuxouf
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: yjnq23ys0ko7
+- id: 8xf7tqcnqglg
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: 1ppfd0lnosmb
+- id: lcz6phlyqd5f
   title: Code Editor
   type: service
   hostname: workstation

@@ -1,28 +1,27 @@
 ---
 slug: quick-takes
-id: ybyy5xvmu261
+id: xk4ekaxytv61
 type: challenge
 title: Quick Takes from a Built-in Judge
-teaser: Attach AgentControl's built-in judges to Otto and watch scores populate
-  the monitoring view in near real time.
+teaser: Attach AgentControl's built-in judges to Otto and watch scores populate the
+  monitoring view in near real time.
 notes:
 - type: text
-  contents: Offline evaluation graded Otto against a curated dataset. That's
-    useful before shipping, but you also want continuous quality signal in
-    production. Built-in judges fill that role — they're pre-configured LLM
-    judges you can attach to any completion-mode variation in 30 seconds,
-    no code changes required.
+  contents: Offline evaluation graded Otto against a curated dataset. That's useful
+    before shipping, but you also want continuous quality signal in production. Built-in
+    judges fill that role — they're pre-configured LLM judges you can attach to any
+    completion-mode variation in 30 seconds, no code changes required.
 tabs:
-- id: m05u22ozg5sm
+- id: 9br0bxlsohok
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: vbrj53q6f5gs
+- id: yolvoiahzvcy
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: ehs2dt4vqm5d
+- id: e2waiwhemjlb
   title: Code Editor
   type: service
   hostname: workstation

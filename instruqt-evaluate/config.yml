@@ -8,5 +8,7 @@ virtualmachines:
   shell: /bin/bash
   machine_type: n1-standard-2
 secrets:
+- name: AWS_ACCESS_KEY_ID
+- name: AWS_SECRET_ACCESS_KEY
 - name: AWS_REGION
 - name: LAUNCHDARKLY_ACCESS_TOKEN

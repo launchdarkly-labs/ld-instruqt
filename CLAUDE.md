@@ -190,7 +190,14 @@ exit 0
 
 ### `track.yml` and `config.yml`
 
-`config.yml` declares the virtual browser (the LaunchDarkly IdP simulator lambda), the VM, and required secrets. We need `LAUNCHDARKLY_ACCESS_TOKEN` and `AWS_REGION`. AWS credentials come from a federated `BedrockProfile` set up at image-bake time (see `gcp-federation/`), so the static `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` secrets are no longer needed.
+`config.yml` declares the virtual browser (the LaunchDarkly IdP simulator lambda), the VM, and required secrets. We need `LAUNCHDARKLY_ACCESS_TOKEN`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY`.
+
+There are **two AWS credential pathways**, deliberately separated by security boundary:
+
+- **Static `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` (Instruqt secrets)**: for VM-side infrastructure that runs in a context the participant never reaches (image-bake-time setup, operator-side terraform, etc.). These never get written into the participant's shell or `~/.aws/credentials`.
+- **Federated `BedrockProfile` (see `gcp-federation/`)**: short-lived AWS credentials obtained at image-bake time by exchanging a GCP-issued JWT for an STS session. Stored as a boto3 profile that the participant-visible ToggleWear app uses for Bedrock calls. Safe to expose because the credentials are scoped + ephemeral.
+
+Don't conflate the two. The participant's app uses the federated profile; never the static keys.
 
 `track.yml` declares slug, ID, title, teaser, description, owner, time limit (7200 = 2hr), and lab config. Use `default_layout: AssignmentRight` and `default_layout_sidebar_size: 25` to match the reference.
 

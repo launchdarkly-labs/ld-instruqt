@@ -1,28 +1,27 @@
 ---
 slug: otto-checks-his-facts
-id: 3ccqkv95coxn
+id: 2k3vwzvjpmae
 type: challenge
 title: Otto Checks His Facts
-teaser: Add a second custom judge that grades Otto against the product catalog,
-  catching invented prices, materials, or policies.
+teaser: Add a second custom judge that grades Otto against the product catalog, catching
+  invented prices, materials, or policies.
 notes:
 - type: text
-  contents: The brand-voice judge measures HOW Otto sounds. This challenge
-    adds a judge that measures WHAT he says — specifically, whether his
-    product claims match the catalog. Same pattern as ch03 (Config in judge
-    mode, snippet drives the criteria, paste a small block into the
-    server), but the snippet here is the catalog itself.
+  contents: The brand-voice judge measures HOW Otto sounds. This challenge adds a
+    judge that measures WHAT he says — specifically, whether his product claims match
+    the catalog. Same pattern as ch03 (Config in judge mode, snippet drives the criteria,
+    paste a small block into the server), but the snippet here is the catalog itself.
 tabs:
-- id: lt3sgt22kc6b
+- id: xyyygmxtrmcm
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: 4wxmq4lo32zt
+- id: pzddc7r4pgib
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: jutyxl56kttj
+- id: 9yhphh5dhicg
   title: Code Editor
   type: service
   hostname: workstation

@@ -54,11 +54,13 @@ FALLBACK_CONFIG = AICompletionConfigDefault(enabled=False)
 # adds a new model, add rows for both shapes here.
 BEDROCK_MODEL_IDS = {
     # Vendor-neutral slugs (Terraform-created model_configs).
+    "claude-sonnet-4-6": "us.anthropic.claude-sonnet-4-6",
     "claude-sonnet-4-5": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
     "claude-haiku-4-5":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "nova-lite":         "us.amazon.nova-lite-v1:0",
     "nova-pro":          "us.amazon.nova-pro-v1:0",
     # Full in-region Bedrock IDs (UI-created model_configs).
+    "anthropic.claude-sonnet-4-6":               "us.anthropic.claude-sonnet-4-6",
     "anthropic.claude-sonnet-4-5-20250929-v1:0": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
     "anthropic.claude-haiku-4-5-20251001-v1:0":  "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "amazon.nova-lite-v1:0":                     "us.amazon.nova-lite-v1:0",
