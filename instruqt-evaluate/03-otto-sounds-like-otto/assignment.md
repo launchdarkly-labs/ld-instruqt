@@ -53,12 +53,10 @@ Otto Brand Voice Judge
 otto-brand-voice-judge
 ```
 4. For **Mode**, select **Judge**.
-<!-- VERIFY: confirm the mode picker shows "Judge" as an option for new configs. -->
 5. For **Evaluation metric**, set the key to:
 ```text
 otto-brand-voice-score
 ```
-<!-- VERIFY: confirm the metric is created inline here, or whether it's set on the variation/config later. -->
 6. Click **Create**.
 
 # Add the judge variation
@@ -76,7 +74,6 @@ default
 ```
 4. Under **Model**, pick **Anthropic** → **claude-haiku-4-5-20251001**. (Cheap and fast — fine for scoring.)
 5. In the prompt text area, with **System** selected, click **Load snippet** and choose **brand-voice**.
-<!-- VERIFY: confirm the Load snippet button is available for judge-mode configs and that brand-voice appears in the snippet picker. -->
 6. Below the snippet markup that the editor inserted, paste:
 ```text
 Score the response on a scale of 0.0 to 1.0:
@@ -110,7 +107,6 @@ Otto's main Config doesn't know about this judge yet. Tell it which metric to co
 ```text
 otto-brand-voice-score
 ```
-<!-- VERIFY: confirm where the evaluationMetricKey lives in the UI — likely a setting on the Config detail page or under Targeting. -->
 3. Save.
 
 # Wire the app to invoke the judge

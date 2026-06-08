@@ -50,12 +50,9 @@ A low-rate stream of chat traffic is already flowing in the background, so by th
 Open the [LaunchDarkly](#tab-0) tab.
 
 1. Go to **Configs** → **Otto Assistant** → **Otto v1 (Born)**.
-<!-- VERIFY: confirm the variation drilldown path; the UI may surface variations on a tab rather than a separate page. -->
 2. Scroll to the **Judges** section and click **Attach judges**.
-<!-- VERIFY: section name and button label. -->
 3. Select all three built-ins: **Accuracy**, **Relevance**, and **Toxicity**.
 4. Set the sampling rate for each to **25%**.
-<!-- VERIFY: confirm sampling is a percentage slider per judge. -->
 5. Click **Save**.
 
 # Watch the scores
@@ -63,9 +60,7 @@ Open the [LaunchDarkly](#tab-0) tab.
 The background traffic generator is sending Otto ~20 questions per minute. At 25% sampling, each judge fires roughly 5 times a minute — fast enough that within a couple of minutes the monitoring view has visible data.
 
 1. Click the **Monitoring** tab.
-<!-- VERIFY: tab name. -->
 2. From the metric dropdown, select **Evaluator metrics**.
-<!-- VERIFY: dropdown label and where evaluator metrics live in the dropdown. -->
 3. You should see three lines start to populate — one per judge — over the last few minutes.
 
 Give it a minute or two if scores haven't appeared yet. The first scores typically land within 60-90 seconds of attaching the judges.

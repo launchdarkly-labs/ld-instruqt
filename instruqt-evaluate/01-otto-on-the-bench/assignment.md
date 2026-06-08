@@ -45,7 +45,6 @@ A 30-question dataset is already in your project. Your job is to point an evalua
 Open the [LaunchDarkly](#tab-0) tab.
 
 1. From the left-hand navigation, click **Datasets**.
-<!-- VERIFY: confirm "Datasets" is the navigation item label and its location in the left rail (may live under an "Evaluations" parent or under "AgentControl"). -->
 2. Find **customer-questions.jsonl** and click it.
 3. The detail page shows 30 rows. Click through a few to see the shape: each row has an `input` (the customer question), an `expected_output` (a rubric describing what a good answer looks like), and a `metadata` object tagging the question's category and difficulty.
 
@@ -54,9 +53,7 @@ The dataset deliberately mixes easy product questions ("Got any t-shirts?") with
 # Create the evaluation
 
 1. Click **Evaluations** in the left navigation.
-<!-- VERIFY: the docs reference "configure evaluations in the playground" — confirm whether Evaluations is its own section or lives under Playgrounds. -->
 2. Click **Create evaluation**.
-<!-- VERIFY: button label and create-flow shape. -->
 3. For **Name**, enter:
 ```text
 Otto Born baseline
@@ -65,16 +62,13 @@ Otto Born baseline
 5. For **Config**, select **Otto Assistant**.
 6. For **Variations**, select **Otto v1 (Born)**. (Only the Born variation — we want to know how the cheap default Otto performs before we touch anything.)
 7. Click **Next** to move to the acceptance criteria step.
-<!-- VERIFY: button label may be "Continue" or similar. -->
 
 # Configure acceptance criteria
 
 The evaluation needs to know how to grade Otto's responses against each row's `expected_output`. You'll set up a single LLM-as-a-judge criterion: a small grading prompt that compares Otto's actual answer to the expected rubric and returns a numeric score.
 
 1. In the **Acceptance criteria** panel, click **Add criterion**.
-<!-- VERIFY: panel and button labels. -->
 2. Choose **LLM-as-a-judge** as the criterion type.
-<!-- VERIFY: option label. -->
 3. For **Criterion name**, enter:
 ```text
 Matches expected output
@@ -88,7 +82,6 @@ Response: {{response}}
 
 Score 1.0 if the response clearly meets the criteria, 0.0 if it clearly doesn't, 0.5 if partial. Respond with only a number.
 ```
-<!-- VERIFY: confirm the template variable names ({{expected_output}}, {{response}}) match what the evaluator surface actually substitutes. -->
 5. Click **Save**.
 
 # Run the evaluation

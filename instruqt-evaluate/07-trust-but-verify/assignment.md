@@ -53,14 +53,12 @@ Your job is to **configure a guarded rollout** that splits traffic between Otto 
 
 1. Click the **Targeting** tab. Confirm the environment is **test**.
 2. Click the **Default rule** (the fallthrough). You should see an option to **Start guarded rollout**.
-<!-- VERIFY: confirm the button is on the default-rule menu and is called "Start guarded rollout" (some LD surfaces call this "Start release"). -->
 3. Configure:
    - **Test variation**: **Otto v4 (Stiff)**
    - **Control variation**: **Otto v1 (Born)**
    - **Metric to watch**: **otto-brand-voice-score**
    - **Regression direction**: lower is worse (the metric's success criteria is HigherThanBaseline)
    - **Stages**: 10% → 25% → 50% → 100% (or whatever the UI offers). Each stage's monitoring window should be 1-2 minutes — short enough that the rollout completes inside the lab budget.
-<!-- VERIFY: confirm exact UI labels for stages and monitoring window. -->
 4. **On regression**: choose **Rollback** (not just notify).
 5. Click **Start**.
 
@@ -71,7 +69,6 @@ The rollout starts at the first stage (10% Stiff). Background traffic flows thro
 When it does:
 
 - The rollout shows a **regression detected** event on the **Targeting** tab's rollout timeline.
-<!-- VERIFY: confirm the event surfaces here and not in a separate Events panel. -->
 - Traffic snaps back to 100% Otto v1 (Born). The Stiff variation gets dropped.
 - The monitoring view's brand-voice-score graph shows the dip during the rollout phase, then recovery after rollback.
 

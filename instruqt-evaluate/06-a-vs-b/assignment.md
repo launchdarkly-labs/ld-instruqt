@@ -65,7 +65,6 @@ Compare this prompt to **Otto v1 (Born)**'s in the same UI. The only delta is on
 # Create the experiment
 
 1. From the left-hand navigation, click **Experiments**.
-<!-- VERIFY: confirm Experiments left-nav location. -->
 2. Click **Create experiment**.
 3. **Name**:
 ```text
@@ -81,7 +80,6 @@ otto-prompt-experiment
 Adding a one-sentence prompt to suggest a complementary item improves brand-voice score without going off-brand.
 ```
 7. **Flag**: **otto-assistant**. Choose the **Default rule** (fallthrough) as the rule the experiment splits on.
-<!-- VERIFY: confirm experiment creation lets you pick a rule and the default rule appears as an option. -->
 8. **Treatments**:
    - **Control**: Otto v1 (Born), 50%, baseline.
    - **Contender**: Otto v3 (Recommender), 50%.
@@ -94,7 +92,6 @@ Adding a one-sentence prompt to suggest a complementary item improves brand-voic
 The experiment is created in a draft state. To begin collecting data, start the first iteration.
 
 1. On the experiment's detail page, click **Start iteration**.
-<!-- VERIFY: button label. -->
 2. Confirm in any dialog that appears.
 
 A background traffic generator is already firing — about two simulated users per second, each scored by the brand-voice judge. Once the iteration starts, traffic splits ~50/50 between the two variations. After a minute or two, the results panel will have enough data to call a winner.
@@ -102,7 +99,6 @@ A background traffic generator is already firing — about two simulated users p
 # Read the results
 
 1. Click the **Results** tab on the experiment.
-<!-- VERIFY: tab label. -->
 2. Watch the per-treatment scores accumulate. The contender's confidence interval will start wide and tighten as samples accumulate.
 3. Once the panel shows a clear winner (one treatment outside the other's confidence interval), you're done.
 
@@ -115,7 +111,6 @@ What you should see, given how the brand-voice judge weights "warm + helpful + c
 # Promote the winner
 
 1. With the winning treatment selected, click **Promote winner**.
-<!-- VERIFY: confirm button label and where it lives in the results view. -->
 2. The Targeting tab's Default rule should now serve the winning variation to all unmatched users.
 
 Click **Check** when the experiment exists with at least one iteration started.
