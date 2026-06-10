@@ -47,12 +47,12 @@ resource "null_resource" "create_dataset" {
     command = <<-EOT
       set -e
 
-      ACCOUNT_ID=$(curl -s -X GET "https://app.launchdarkly.com/api/v2/account" \
+      ACCOUNT_ID=$(curl -s -X GET 'https://app.launchdarkly.com/api/v2/account' \
           -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" | jq -r '._id')
-      MEMBER_EMAIL="instruqt%2B${LD_PROJECT_KEY}@launchdarkly.com"
-      MEMBER_ID=$(curl -s -X GET "https://app.launchdarkly.com/api/v2/members?filter=email:$MEMBER_EMAIL" \
+      MEMBER_EMAIL='instruqt%2B${var.project_key}@launchdarkly.com'
+      MEMBER_ID=$(curl -s -X GET 'https://app.launchdarkly.com/api/v2/members?filter=email:$MEMBER_EMAIL' \
           -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" | jq -r '.items[0]._id')
-      LD_PROJECT_ID=$(curl -s -X GET "https://app.launchdarkly.com/api/v2/projects/$LD_PROJECT_KEY" \
+      LD_PROJECT_ID=$(curl -s -X GET 'https://app.launchdarkly.com/api/v2/projects/$LD_PROJECT_KEY' \
           -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" | jq -r '._id')
 
       CREATE_RESPONSE=$(curl -fsS -X POST \
