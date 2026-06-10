@@ -103,7 +103,8 @@ resource "launchdarkly_metric" "brand_voice_score" {
 # directly via REST.
 
 resource "null_resource" "wire_evaluation_metric" {
-  depends_on = [launchdarkly_metric.brand_voice_score]
+  depends_on = [launchdarkly_metric.brand_voice_score,
+                launchdarkly_ai_config.brand_voice_judge]
 
   triggers = {
     metric_key = launchdarkly_metric.brand_voice_score.key
@@ -112,7 +113,7 @@ resource "null_resource" "wire_evaluation_metric" {
   provisioner "local-exec" {
     command = <<-EOT
       curl -fsS -X PATCH \
-        'https://app.launchdarkly.com/api/v2/projects/${var.project_key}/ai-configs/otto-assistant' \
+        'https://app.launchdarkly.com/api/v2/projects/${var.project_key}/ai-configs/otto-brand-voice-judge' \
         -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H 'Content-Type: application/json' \
         --data-raw '{"evaluationMetricKey":"otto-brand-voice-score"}'
