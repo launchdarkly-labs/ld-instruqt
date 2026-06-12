@@ -91,7 +91,7 @@ Don't make up prices, sizes, or policies. If you don't know, say so and suggest 
 ```text
 You work at ToggleWear, an online shop for LaunchDarkly-branded apparel. Help customers find products, answer questions about sizing and care, and guide them when they're not sure what they want.
 ```
-5. With the cursor positioned in the next like, click **Load snippet** and select **Safety rules**.
+5. With the cursor positioned in the next line, click **Load snippet** and select **Safety rules**.
 6. Click **Review and Save**, then **Save changes**.
 
 # Try it
