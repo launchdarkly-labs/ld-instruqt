@@ -271,19 +271,28 @@ aside.otto {
   font-size: 0.8rem;
   color: rgba(245, 245, 242, 0.65);
 }
-.otto-close {
+.otto-actions {
   grid-column: 2;
   grid-row: 1 / span 2;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.otto-reset,
+.otto-close {
   background: transparent;
   border: 0;
   color: var(--otto-ink);
-  font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
   opacity: 0.7;
   padding: 0.25rem 0.5rem;
 }
+.otto-reset { font-size: 1.15rem; }
+.otto-close { font-size: 1.4rem; }
+.otto-reset:hover,
 .otto-close:hover { opacity: 1; }
+.otto-reset:disabled { opacity: 0.4; cursor: progress; }
 
 .otto-transcript {
   flex: 1 1 0;

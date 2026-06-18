@@ -93,9 +93,24 @@ class ChatResponse(BaseModel):
     model: Optional[str] = None
 
 
+class ChatResetRequest(BaseModel):
+    session_id: str
+
+
 @app.get("/")
 def index():
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.post("/chat/reset")
+def chat_reset(req: ChatResetRequest):
+    """Clear server-side history and turn count for this session so the
+    learner can start a fresh chat without refreshing the page."""
+    with _state_lock:
+        _turns.pop(req.session_id, None)
+        _history.pop(req.session_id, None)
+    log.info("chat reset session=%s", req.session_id)
+    return {"ok": True}
 
 
 @app.get("/healthz")
