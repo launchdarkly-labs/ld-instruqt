@@ -59,7 +59,7 @@ resource "null_resource" "create_dataset" {
       CREATE_RESPONSE=$(curl -fsS -X POST \
         '${local.int_base}/projects/${var.project_key}/datasets' \
         -H 'Content-Type: application/json' \
-        -H "Authorization: $LAUNCHDARKLY_AG_API_TOKEN" \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H "X-Ld-Accountid: $ACCOUNT_ID" \
         -H "X-Ld-Mbrid: $MEMBER_ID" \
         -H "X-Ld-Prjid: $LD_PROJECT_ID" \
@@ -97,7 +97,7 @@ resource "null_resource" "create_evaluation" {
 
       DATASET_ID=$(curl -fsS -X GET \
         '${local.api_base}/projects/${var.project_key}/datasets' \
-        -H "Authorization: $LAUNCHDARKLY_AG_API_TOKEN" \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H 'LD-API-Version: beta' \
         | jq -r '.items[]? | select(.filename == "${local.dataset_filename}") | .id' \
         | head -n 1)
@@ -110,7 +110,7 @@ resource "null_resource" "create_evaluation" {
       # If an evaluation with this name already exists, skip (idempotent).
       EXISTING=$(curl -fsS -X GET \
         '${local.api_base}/projects/${var.project_key}/evaluations' \
-        -H "Authorization: $LAUNCHDARKLY_AG_API_TOKEN" \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H 'LD-API-Version: beta' \
         | jq -r '.items[]? | select(.name == "${local.evaluation_name}") | .id' \
         | head -n 1)
@@ -122,7 +122,7 @@ resource "null_resource" "create_evaluation" {
 
       curl -fsS -X POST \
         '${local.api_base}/projects/${var.project_key}/evaluations' \
-        -H "Authorization: $LAUNCHDARKLY_AG_API_TOKEN" \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H 'Content-Type: application/json' \
         -H 'LD-API-Version: beta' \
         --data-raw "$(jq -n \
@@ -149,7 +149,7 @@ resource "null_resource" "run_evaluation" {
 
       EVAL_ID=$(curl -fsS -X GET \
         '${local.api_base}/projects/${var.project_key}/evaluations' \
-        -H "Authorization: $LAUNCHDARKLY_AG_API_TOKEN" \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H 'LD-API-Version: beta' \
         | jq -r '.items[]? | select(.name == "${local.evaluation_name}") | .id' \
         | head -n 1)
@@ -161,7 +161,7 @@ resource "null_resource" "run_evaluation" {
 
       curl -fsS -X POST \
         '${local.api_base}/projects/${var.project_key}/evaluations/$EVAL_ID/runs' \
-        -H "Authorization: $LAUNCHDARKLY_AG_API_TOKEN" \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
         -H 'Content-Type: application/json' \
         -H 'LD-API-Version: beta' \
         > /dev/null
