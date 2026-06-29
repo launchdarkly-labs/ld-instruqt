@@ -1,2 +1,26 @@
 #!/bin/sh
+
+# 1. Flag exists in the project.
+FLAG=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/new-arrivals-enabled" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$FLAG" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **new-arrivals-enabled** flag hasn't been created yet. Follow the **Create the flag** steps in the lab."
+  exit 1
+fi
+
+# 2. Flag is turned on in production.
+FLAG_ON=$(echo "$FLAG" | jq -r '.environments.production.on // false')
+if [ "$FLAG_ON" != "true" ]; then
+  fail-message "The **new-arrivals-enabled** flag is off in the **production** environment. Open the flag's Targeting tab, make sure **production** is selected, and toggle it on."
+  exit 1
+fi
+
+# 3. Code has been pasted into server.py.
+if ! grep -q 'ld_client.variation("new-arrivals-enabled"' /opt/ld/ai-configs-intro/app/server.py; then
+  fail-message "The flag evaluation code hasn't been added to \`server.py\` yet. Find the **CodeControl Challenge 01 paste block** and replace it with the code from the lab."
+  exit 1
+fi
+
 exit 0

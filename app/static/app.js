@@ -64,7 +64,23 @@ function initTierSwitch() {
   sel.addEventListener('change', () => {
     userTier = sel.value;
     appendBubble('system', `Switched to ${userTier === 'premium' ? 'Premium' : 'Free'} user.`);
+    fetchFeatures();
   });
+}
+
+// ---------- Feature flags ----------
+
+async function fetchFeatures() {
+  try {
+    const res = await fetch(
+      `/api/features?session_id=${encodeURIComponent(getSessionId())}&user_tier=${encodeURIComponent(userTier)}`
+    );
+    if (!res.ok) return;
+    const flags = await res.json();
+    document.getElementById('new-arrivals').hidden = !flags.new_arrivals_enabled;
+  } catch (_) {
+    // non-fatal — storefront still works without flag data
+  }
 }
 
 // ---------- Otto widget ----------
@@ -168,5 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTierSwitch();
   initOttoPanel();
   initChatForm();
+  fetchFeatures();
   appendBubble('system', "Hi — I'm Otto. Ask me anything about ToggleWear.");
 });

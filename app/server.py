@@ -103,6 +103,17 @@ def healthz():
     return {"ok": True, "otto_config": OTTO_CONFIG_KEY, "region": AWS_REGION}
 
 
+@app.get("/api/features")
+def api_features(session_id: str, user_tier: str = "free"):
+    # ─────────────────────────────────────────────────────────────────────
+    # CodeControl Challenge 01 paste block — replace this stub with flag evaluation.
+    # The lab instructions tell you exactly what to put between these markers.
+    # Until you do, the New Arrivals section stays hidden.
+    # ─────────────────────────────────────────────────────────────────────
+    return {"new_arrivals_enabled": False}
+    # ─── End CodeControl Challenge 01 paste block ─────────────────────────
+
+
 @app.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
     with _state_lock:

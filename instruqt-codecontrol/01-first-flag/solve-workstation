@@ -1,2 +1,21 @@
 #!/bin/sh
+
+set -e
+
+cd /opt/ld/ai-configs-intro/terraform/codecontrol-01
+echo "project_key = \"${LD_PROJECT_KEY}\"" > terraform.tfvars
+terraform init -input=false
+terraform apply -auto-approve
+
+python3 /opt/ld/ai-configs-intro/terraform/codecontrol-01/patch-server.py
+
+# Turn the flag on in production (what the learner would have done in the UI).
+curl -fsS -X PATCH \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/new-arrivals-enabled" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" \
+  -H "Content-Type: application/json; domain-model=launchdarkly.semanticpatch" \
+  --data "{\"environmentKey\":\"production\",\"instructions\":[{\"kind\":\"turnFlagOn\"}]}"
+
+service togglewear restart
+
 exit 0

@@ -179,6 +179,54 @@ a { color: inherit; }
   line-height: 1.4;
 }
 
+/* ---------- New Arrivals banner ---------- */
+
+.new-arrivals {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+.new-arrivals-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--ink);
+  color: var(--otto-ink);
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+}
+
+.new-arrivals-badge {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.new-arrivals-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.95rem;
+}
+
+.new-arrivals-text strong {
+  font-weight: 600;
+}
+
+.new-arrivals-text span {
+  color: rgba(245, 245, 242, 0.7);
+  font-size: 0.875rem;
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
