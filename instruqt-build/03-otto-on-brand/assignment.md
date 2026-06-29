@@ -98,4 +98,8 @@ You work at ToggleWear, an online shop for LaunchDarkly-branded apparel. Help cu
 
 Open the [ToggleWear](#tab-1) tab and chat with Otto. He should sound exactly the same as he did at the end of Challenge 02 — same voice, same guardrails — because the snippets contain the same content. The win is structural, not behavioral: now if marketing changes the brand voice, you change it in one place.
 
+```text
+What's the difference between the Rocket Tee and the Feature Branch Crewneck?
+```
+
 Click **Check** when you're satisfied.

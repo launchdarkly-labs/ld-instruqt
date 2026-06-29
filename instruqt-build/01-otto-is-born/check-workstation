@@ -3,7 +3,7 @@
 # 1. The otto-assistant AI Config exists.
 CONFIG=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant" \
-  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}")
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
 
 if [ "$(echo "$CONFIG" | jq -r '.key // "null"')" = "null" ]; then
   fail-message "The Otto Assistant AI Config has not been created yet. Follow the steps under **Create Otto's AI Config**."
@@ -32,7 +32,7 @@ fi
 # 4. Targeting in `test` env points at otto-born (not the default `disabled` variation).
 TARGETING=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/targeting" \
-  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}")
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
 BORN_NAME=$(echo "$CONFIG" | jq -r '.variations[]? | select(.key=="otto-born") | .name')
 FALLTHROUGH_IDX=$(echo "$TARGETING" | jq -r '.environments.test.fallthrough.variation // empty')
 FALLTHROUGH_NAME=$(echo "$TARGETING" | jq -r ".variations[${FALLTHROUGH_IDX}].name // empty")

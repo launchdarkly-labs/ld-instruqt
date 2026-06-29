@@ -27,7 +27,7 @@ resource "launchdarkly_ai_config_variation" "otto_premium" {
   config_key       = "otto-assistant"
   key              = "otto-premium"
   name             = "Otto (Premium)"
-  model_config_key = "Anthropic.claude-sonnet-4-6"
+  model_config_key = "Bedrock.anthropic.claude-sonnet-4-6"
 
   messages {
     role    = "system"
