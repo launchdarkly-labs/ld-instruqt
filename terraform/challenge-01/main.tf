@@ -6,7 +6,7 @@
 
 resource "launchdarkly_model_config" "haiku" {
   project_key    = var.project_key
-  key            = "Bedrock.anthropic.claude-haiku-4-5-20251001-v1:0"
+  key            = "Bedrock.anthropic.claude-haiku-4-5-20251001-v1_0"
   name           = "anthropic.claude-haiku-4-5-20251001-v1:0"
   model_id       = "anthropic.claude-haiku-4-5-20251001-v1:0"
   model_provider = "Bedrock"
