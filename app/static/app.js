@@ -78,6 +78,7 @@ async function fetchFeatures() {
     if (!res.ok) return;
     const flags = await res.json();
     document.getElementById('new-arrivals').hidden = !flags.new_arrivals_enabled;
+    document.getElementById('premium-banner').hidden = !flags.premium_banner_enabled;
   } catch (_) {
     // non-fatal — storefront still works without flag data
   }

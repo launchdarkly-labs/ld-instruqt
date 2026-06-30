@@ -1,2 +1,50 @@
 #!/bin/sh
+
+# 1. Premium Members segment exists.
+SEGMENT=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/segments/${LD_PROJECT_KEY}/production/premium-members" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$SEGMENT" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **Premium Members** segment hasn't been created yet. Follow the **Create a segment** steps in the lab."
+  exit 1
+fi
+
+# 2. Segment has a rule checking the tier attribute.
+TIER_CLAUSE=$(echo "$SEGMENT" | jq '[.rules[]? | .clauses[]? | select(.attribute == "tier")] | length')
+if [ "$TIER_CLAUSE" = "0" ]; then
+  fail-message "The **Premium Members** segment exists but has no rule for the **tier** attribute. Add a rule: tier is one of **premium**."
+  exit 1
+fi
+
+# 3. Flag exists.
+FLAG=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/premium-banner" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$FLAG" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **premium-banner** flag hasn't been created yet. Follow the **Create the flag** steps in the lab."
+  exit 1
+fi
+
+# 4. Flag is on in production.
+FLAG_ON=$(echo "$FLAG" | jq -r '.environments.production.on // false')
+if [ "$FLAG_ON" != "true" ]; then
+  fail-message "The **premium-banner** flag is off in the **production** environment. Open the flag's Targeting tab and toggle it on."
+  exit 1
+fi
+
+# 5. Flag has a segment-match rule targeting premium-members.
+SEGMENT_RULE=$(echo "$FLAG" | jq '[.environments.production.rules[]? | select(.clauses[]? | .op == "segmentMatch")] | length')
+if [ "$SEGMENT_RULE" = "0" ]; then
+  fail-message "The **premium-banner** flag has no segment targeting rule. Add a rule: IF user is in segment **Premium Members** THEN serve **true**."
+  exit 1
+fi
+
+# 6. Code added to server.py.
+if ! grep -q '"premium_banner_enabled"' /opt/ld/ai-configs-intro/app/server.py; then
+  fail-message "The \`premium_banner_enabled\` line hasn't been added to \`server.py\` yet. Follow the **Wire it into the app** steps in the lab."
+  exit 1
+fi
+
 exit 0

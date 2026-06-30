@@ -227,6 +227,55 @@ a { color: inherit; }
   font-size: 0.875rem;
 }
 
+/* ---------- Premium Members banner ---------- */
+
+.premium-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+.premium-banner-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #1a1400;
+  color: #f5eed6;
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  border: 1px solid #c9a84c;
+}
+
+.premium-badge {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: #c9a84c;
+  color: #1a1400;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.premium-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.95rem;
+}
+
+.premium-banner-text strong {
+  font-weight: 600;
+}
+
+.premium-banner-text span {
+  color: rgba(245, 238, 214, 0.7);
+  font-size: 0.875rem;
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
