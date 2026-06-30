@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# 1. The otto-assistant AI Config exists.
+# 1. The otto-assistant Config exists.
 CONFIG=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant" \
   -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
 
 if [ "$(echo "$CONFIG" | jq -r '.key // "null"')" = "null" ]; then
-  fail-message "The Otto Assistant AI Config has not been created yet. Follow the steps under **Create Otto's AI Config**."
+  fail-message "The Otto Assistant Config has not been created yet. Follow the steps under **Create Otto's Config**."
   exit 1
 fi
 

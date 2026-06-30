@@ -12,7 +12,7 @@ notes:
 answers:
 - The Python `launchdarkly-server-sdk-ai` package auto-reloads the server when a prompt
   changes.
-- LaunchDarkly AI Configs evaluate at runtime, so prompt edits in the UI are picked
+- LaunchDarkly AgentControl evaluates at runtime, so prompt edits in the UI are picked
   up on the next chat — no redeploy required.
 - The systemd service watches for prompt file changes on disk and restarts the app.
 - The ToggleWear chat widget caches the prompt in `localStorage` and refreshes hourly.
