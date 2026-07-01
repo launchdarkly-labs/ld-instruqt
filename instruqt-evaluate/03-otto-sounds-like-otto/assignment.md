@@ -44,20 +44,12 @@ Custom judges are AgentControl Configs in **judge mode**. They have a prompt tha
 Open the [LaunchDarkly](#tab-0) tab.
 
 1. From the left-hand navigation, click **Configs**, then click **Create config**.
-2. For **Name**, enter:
+2. For **Mode**, select **Judge**.
+3. For **Name**, enter:
 ```text
 Otto Brand Voice Judge
 ```
-3. For **Key**, confirm or set:
-```text
-otto-brand-voice-judge
-```
-4. For **Mode**, select **Judge**.
-5. For **Evaluation metric**, set the key to:
-```text
-otto-brand-voice-score
-```
-6. Click **Create**.
+4. Click **Create**.
 
 # Add the judge variation
 
@@ -68,12 +60,11 @@ The judge needs a variation that defines the grading prompt.
 ```text
 Default
 ```
-3. For **Key**, confirm:
-```text
-default
+4. Click on the **Model** dropdown, search for and select:
 ```
-4. Under **Model**, pick **Anthropic** → **claude-haiku-4-5-20251001**. (Cheap and fast — fine for scoring.)
-5. In the prompt text area, with **System** selected, click **Load snippet** and choose **brand-voice**.
+anthropic.claude-haiku-4-5-20251001-v1:0
+```
+5. Clear out the prompt text area, with **System** selected, click **Load snippet** and choose **brand-voice**.
 6. Below the snippet markup that the editor inserted, paste:
 ```text
 Score the response on a scale of 0.0 to 1.0:
@@ -94,20 +85,21 @@ Response to evaluate:
 Like any new Config, the judge defaults to its disabled variation.
 
 1. Click the **Targeting** tab.
-2. Make sure the environment selector reads **test**.
-3. Under **Default rule**, set the variation to **Default**.
-4. Click **Review and save**, then **Save changes**.
+2. Make sure the environment selector reads **Test**.
+3. Make sure the Config is toggled **On**.
+4. Under **Default rule**, make sure the vairation is set to **Default**.
+5. If any changes were make, click **Review and save**, then **Save changes**.
 
 # Wire Otto's Config to watch the score
 
 Otto's main Config doesn't know about this judge yet. Tell it which metric to consider its primary quality signal — the guarded rollout in ch07 will read this.
 
 1. Navigate to **Configs** → **Otto Assistant**.
-2. In the config's settings, set the **Evaluation metric** to:
-```text
-otto-brand-voice-score
-```
-3. Save.
+2. For both **Otto (Born)** and **Otto (Premium)** variations:
+   a. Below the prompt text area, click **+Add judges**.
+   b. Select **Otto Brand Voice Judge** and click **Add 1 judge**.
+   c. Set the **Sampling percentage** to **25%**.
+3. Click **Review and save**, then **Save changes**.
 
 # Wire the app to invoke the judge
 
