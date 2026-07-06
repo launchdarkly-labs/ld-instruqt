@@ -42,7 +42,7 @@ ENV_KEY = "test"
 LD_API = "https://app.launchdarkly.com/api/v2"
 
 LD_PROJECT_KEY = os.environ.get("LD_PROJECT_KEY")
-LD_TOKEN = os.environ.get("LAUNCHDARKLY_ACCESS_TOKEN")
+LD_TOKEN = os.environ.get("LD_API_TOKEN")
 
 _scores: deque[float] = deque(maxlen=WINDOW_SIZE)
 _lock = threading.Lock()
@@ -55,7 +55,7 @@ def _fetch_safe_variation_id() -> Optional[str]:
     if _safe_variation_id:
         return _safe_variation_id
     if not LD_PROJECT_KEY or not LD_TOKEN:
-        log.warning("adaptive: missing LD_PROJECT_KEY or LAUNCHDARKLY_ACCESS_TOKEN")
+        log.warning("adaptive: missing LD_PROJECT_KEY or LD_API_TOKEN")
         return None
     url = f"{LD_API}/projects/{LD_PROJECT_KEY}/ai-configs/{CONFIG_KEY}/targeting"
     req = urllib.request.Request(url, headers={"Authorization": LD_TOKEN})

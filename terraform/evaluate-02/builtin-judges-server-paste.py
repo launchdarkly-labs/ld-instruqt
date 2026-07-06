@@ -12,7 +12,7 @@
             import urllib.error as _u_err_bij
             import json as _j_mod_bij
             _proj_bij = os.environ.get("LD_PROJECT_KEY")
-            _tok_bij = os.environ.get("LAUNCHDARKLY_ACCESS_TOKEN")
+            _tok_bij = os.environ.get("LD_API_TOKEN")
             _wanted_bij = {
                 "$ld:ai:judge:accuracy",
                 "$ld:ai:judge:relevance",

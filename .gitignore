@@ -141,3 +141,10 @@ instruqt-jwt.json
 
 # Local Claude Code project state (settings, skills, session memory)
 .claude/
+
+# Ad-hoc scratch files used during smoke testing; may contain real tokens
+# or other credentials mid-experiment. Do not commit.
+test.json
+tmp.sh
+scratch.*
+scratch_*

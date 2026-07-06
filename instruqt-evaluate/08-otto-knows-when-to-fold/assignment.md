@@ -91,7 +91,7 @@ ENV_KEY = "test"
 LD_API = "https://app.launchdarkly.com/api/v2"
 
 LD_PROJECT_KEY = os.environ.get("LD_PROJECT_KEY")
-LD_TOKEN = os.environ.get("LAUNCHDARKLY_ACCESS_TOKEN")
+LD_TOKEN = os.environ.get("LD_API_TOKEN")
 
 _scores: deque[float] = deque(maxlen=WINDOW_SIZE)
 _lock = threading.Lock()

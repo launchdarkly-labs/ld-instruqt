@@ -192,12 +192,19 @@ exit 0
 
 `config.yml` declares the virtual browser (the LaunchDarkly IdP simulator lambda), the VM, and required secrets. We need `LAUNCHDARKLY_ACCESS_TOKEN`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY`.
 
-There are **two AWS credential pathways**, deliberately separated by security boundary:
+There are **three credential pathways** in the workshop, deliberately separated by security boundary. Don't conflate them.
+
+**AWS:**
 
 - **Static `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` (Instruqt secrets)**: for VM-side infrastructure that runs in a context the participant never reaches (image-bake-time setup, operator-side terraform, etc.). These never get written into the participant's shell or `~/.aws/credentials`.
 - **Federated `BedrockProfile` (see `gcp-federation/`)**: short-lived AWS credentials obtained at image-bake time by exchanging a GCP-issued JWT for an STS session. Stored as a boto3 profile that the participant-visible ToggleWear app uses for Bedrock calls. Safe to expose because the credentials are scoped + ephemeral.
 
-Don't conflate the two. The participant's app uses the federated profile; never the static keys.
+**LaunchDarkly:**
+
+- **`LAUNCHDARKLY_ACCESS_TOKEN` (Instruqt secret)** — the operator's master API token. Available in the environment of `setup-workstation` / `check-workstation` / `solve-workstation` scripts and Terraform `local-exec` blocks. **Never** written into `app/.env` or otherwise persisted where the participant's app or shell can read it.
+- **`LD_API_TOKEN` (minted per lab session)** — a scoped LaunchDarkly API token created at track-level `setup-workstation` time by exchanging the operator token via `POST /api/v2/tokens`. Its inline role restricts it to resources under the participant's project (`proj/<key>` and `proj/<key>:*`). Sed'd into `app/.env` so `togglewear.service` can read it for runtime REST calls (built-in judge discovery in Evaluate ch02, adaptive-switching targeting flips in ch08). Safe to expose because the blast radius is limited to a sandbox project that's destroyed at cleanup.
+
+Runtime code in `app/` and `traffic-generator/` reads only `LD_API_TOKEN` (via `os.environ`). Anywhere you see `LAUNCHDARKLY_ACCESS_TOKEN` referenced, it should be in operator-context code (setup/check/solve scripts, terraform local-exec, or CLI-invoked python helpers spawned by those scripts).
 
 `track.yml` declares slug, ID, title, teaser, description, owner, time limit (7200 = 2hr), and lab config. Use `default_layout: AssignmentRight` and `default_layout_sidebar_size: 25` to match the reference.
 

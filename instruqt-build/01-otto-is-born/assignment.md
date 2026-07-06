@@ -65,7 +65,7 @@ otto-assistant
 
 The Config exists but has no variations yet — nothing to serve. Add the "born" variation.
 
-1. You now on the Config detail page, adding the first variation.
+1. You are now on the Config detail page, adding the first variation.
 2. For **Name**, enter:
 ```text
 Otto (Born)
