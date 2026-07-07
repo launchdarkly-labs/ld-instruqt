@@ -73,14 +73,22 @@
                         for m in (_jc_sdk.messages or []) if m.role != "system"
                     ]
                     if not _msgs:
-                        # Built-in judge templates typically contain only a
-                        # system prompt with {response} already interpolated.
-                        # Bedrock's Converse API rejects an empty messages
-                        # list -- it requires at least one user turn.
+                        # Built-in judge templates contain only a system
+                        # prompt. Whether variable interpolation of
+                        # {response} works via judge_config()'s variables
+                        # kwarg is not reliably documented -- earlier logs
+                        # showed the model complaining it had nothing to
+                        # evaluate. Include the response text explicitly
+                        # in the user turn to guarantee the model sees it.
                         _msgs = [{
                             "role": "user",
                             "content": [{
-                                "text": "Provide your score as a single number between 0.0 and 1.0.",
+                                "text": (
+                                    "Response to evaluate:\n\n"
+                                    f"{assistant_text}\n\n"
+                                    "Provide your score as a single number "
+                                    "between 0.0 and 1.0."
+                                ),
                             }],
                         }]
                     _raw_model = _jc_sdk.model.name
