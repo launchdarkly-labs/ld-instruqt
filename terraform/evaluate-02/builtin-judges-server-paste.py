@@ -3,12 +3,10 @@
     # create_model + run path, so attached judges don't auto-fire. Invoke
     # each attached judge explicitly on every /chat call.
     #
-    # The variation endpoint at /ai-configs/{config}/variations/{var} in the
-    # LD API returns a LIST of that variation's versions, shaped as
-    # {items: [...], totalCount: N}. Each item is a versioned snapshot with
-    # its own judgeConfiguration. Attaching judges via the UI creates a new
-    # version -- so we iterate items and pick the latest one that has
-    # judges attached.
+    # The variation endpoint at /ai-configs/{config}/variations/{var} returns
+    # a paginated LIST of versions of that variation. Attaching judges via
+    # the UI creates a new version -- so we iterate items and pick the
+    # latest with a non-empty judges array.
     try:
         import urllib.request as _urlreq
         import json as _json
@@ -29,14 +27,9 @@
             with _urlreq.urlopen(_req, timeout=5) as _r:
                 _resp = _json.loads(_r.read())
             _items = _resp.get("items", [])
-            log.info(
-                "builtin-judge: %d versions returned (totalCount=%s)",
-                len(_items), _resp.get("totalCount"),
-            )
             _attached = []
             _selected_ver = None
             for _item in _items:
-                # LD may name the version field several things; try a few.
                 _v = (
                     _item.get("version")
                     or _item.get("versionNumber")
@@ -45,10 +38,6 @@
                 )
                 _jc = _item.get("judgeConfiguration") or {}
                 _judges = _jc.get("judges", [])
-                log.info(
-                    "builtin-judge: item version=%s judges=%d keys=%s",
-                    _v, len(_judges), sorted(_item.keys())[:12],
-                )
                 if _judges and (_selected_ver is None or _v > _selected_ver):
                     _attached = _judges
                     _selected_ver = _v
@@ -60,52 +49,79 @@
             for _j in _attached:
                 _jk = _j.get("judgeConfigKey")
                 _sr = float(_j.get("samplingRate", 0.0))
-                log.info("builtin-judge: candidate key=%s sampling=%.2f", _jk, _sr)
                 if _rand.random() > _sr:
                     continue
-                _ctx = Context.builder(req.session_id).set("tier", req.user_tier).build()
-                _jc_sdk = ai_client.judge_config(
-                    _jk, _ctx, variables={"response": assistant_text}
-                )
-                log.info(
-                    "builtin-judge: fetched cfg key=%s enabled=%s model=%s",
-                    _jk, _jc_sdk.enabled,
-                    (_jc_sdk.model.name if _jc_sdk.model else None),
-                )
-                if not _jc_sdk.enabled or _jc_sdk.model is None:
-                    continue
-                _sys = [
-                    {"text": m.content}
-                    for m in (_jc_sdk.messages or []) if m.role == "system"
-                ]
-                _msgs = [
-                    {"role": m.role, "content": [{"text": m.content}]}
-                    for m in (_jc_sdk.messages or []) if m.role != "system"
-                ]
-                _kw = {
-                    "modelId": resolve_bedrock_model(_jc_sdk.model.name),
-                    "messages": _msgs,
-                    "inferenceConfig": {"maxTokens": 8, "temperature": 0.0},
-                }
-                if _sys:
-                    _kw["system"] = _sys
-                _br = bedrock.converse(**_kw)
-                _txt = _extract_text(_br).strip()
                 try:
-                    _score = float(_txt.split()[0])
-                except (ValueError, IndexError):
-                    _score = None
-                _metric_key = f"$ld:ai:judge:{_jk}"
-                if _score is not None and 0.0 <= _score <= 1.0:
-                    ld_client.track(_metric_key, _ctx, None, _score)
+                    _ctx = Context.builder(req.session_id).set("tier", req.user_tier).build()
+                    _jc_sdk = ai_client.judge_config(
+                        _jk, _ctx, variables={"response": assistant_text}
+                    )
                     log.info(
-                        "builtin-judge: session=%s judge=%s score=%.2f metric=%s",
-                        req.session_id, _jk, _score, _metric_key,
+                        "builtin-judge: step=fetched-cfg key=%s enabled=%s model=%s",
+                        _jk, _jc_sdk.enabled,
+                        (_jc_sdk.model.name if _jc_sdk.model else None),
                     )
-                else:
-                    log.warning(
-                        "builtin-judge: parse-fail key=%s raw=%r",
-                        _jk, _txt,
+                    if not _jc_sdk.enabled or _jc_sdk.model is None:
+                        log.info("builtin-judge: skipping (not enabled or no model) key=%s", _jk)
+                        continue
+                    _sys = [
+                        {"text": m.content}
+                        for m in (_jc_sdk.messages or []) if m.role == "system"
+                    ]
+                    _msgs = [
+                        {"role": m.role, "content": [{"text": m.content}]}
+                        for m in (_jc_sdk.messages or []) if m.role != "system"
+                    ]
+                    _raw_model = _jc_sdk.model.name
+                    try:
+                        _model_id = resolve_bedrock_model(_raw_model)
+                    except Exception as _re:  # noqa: BLE001
+                        log.warning(
+                            "builtin-judge: step=resolve-model key=%s raw=%s -> exception %s; using raw",
+                            _jk, _raw_model, _re,
+                        )
+                        _model_id = _raw_model
+                    log.info(
+                        "builtin-judge: step=resolved-model key=%s raw=%s -> %s sys=%d msgs=%d",
+                        _jk, _raw_model, _model_id, len(_sys), len(_msgs),
                     )
-    except Exception:  # noqa: BLE001
-        log.exception("Built-in judge invocation failed (non-fatal)")
+                    _kw = {
+                        "modelId": _model_id,
+                        "messages": _msgs,
+                        "inferenceConfig": {"maxTokens": 8, "temperature": 0.0},
+                    }
+                    if _sys:
+                        _kw["system"] = _sys
+                    _br = bedrock.converse(**_kw)
+                    log.info("builtin-judge: step=bedrock-ok key=%s", _jk)
+                    # Extract text without relying on a helper that may not
+                    # exist in server.py at ch02 time.
+                    _txt_parts = []
+                    for _content in _br.get("output", {}).get("message", {}).get("content", []):
+                        if "text" in _content:
+                            _txt_parts.append(_content["text"])
+                    _txt = "".join(_txt_parts).strip()
+                    log.info("builtin-judge: step=extracted-text key=%s raw=%r", _jk, _txt[:80])
+                    try:
+                        _score = float(_txt.split()[0])
+                    except (ValueError, IndexError):
+                        _score = None
+                    _metric_key = f"$ld:ai:judge:{_jk}"
+                    if _score is not None and 0.0 <= _score <= 1.0:
+                        ld_client.track(_metric_key, _ctx, None, _score)
+                        log.info(
+                            "builtin-judge: step=tracked session=%s judge=%s score=%.2f metric=%s",
+                            req.session_id, _jk, _score, _metric_key,
+                        )
+                    else:
+                        log.warning(
+                            "builtin-judge: step=parse-fail key=%s raw=%r",
+                            _jk, _txt,
+                        )
+                except Exception as _pe:  # noqa: BLE001
+                    log.exception(
+                        "builtin-judge: per-judge failure key=%s: %s",
+                        _jk, _pe,
+                    )
+    except Exception as _oe:  # noqa: BLE001
+        log.exception("builtin-judge: outer failure: %s", _oe)
