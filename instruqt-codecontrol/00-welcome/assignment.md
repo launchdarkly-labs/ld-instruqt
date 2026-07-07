@@ -41,7 +41,7 @@ CodeControl gives you runtime control over what's live in production without red
 |---|---|
 | 01 | Create your first feature flag and wire it into the app. |
 | 02 | Add targeting rules — free and premium users see different things. |
-| 03 | Roll a new feature out progressively: 10% → 50% → 100%. |
+| 03 | Roll a new feature out progressively: 0% → 50% → 100%. |
 | 04 | Run an A/B experiment on two storefront headlines. Pick the winner. |
 | 05 | Simulate a bad release. Pull the kill switch. Watch it recover. |
 | 06 | Quick quiz to consolidate what you've learned. |

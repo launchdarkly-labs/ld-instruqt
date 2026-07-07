@@ -1,2 +1,10 @@
 #!/bin/sh
+
+# Turn the flag off (what the learner would do in the UI).
+curl -fsS -X PATCH \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/new-product-layout" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" \
+  -H "Content-Type: application/json; domain-model=launchdarkly.semanticpatch" \
+  --data "{\"environmentKey\":\"production\",\"instructions\":[{\"kind\":\"turnFlagOff\"}]}"
+
 exit 0

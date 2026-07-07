@@ -1,2 +1,42 @@
 #!/bin/sh
+
+# 1. Flag exists.
+FLAG=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/hero-headline" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$FLAG" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **hero-headline** flag hasn't been created yet. Follow the **Create the flag** steps in the lab."
+  exit 1
+fi
+
+# 2. Flag has at least 2 variations.
+VAR_COUNT=$(echo "$FLAG" | jq '.variations | length')
+if [ "$VAR_COUNT" -lt 2 ]; then
+  fail-message "The **hero-headline** flag needs at least two variations. Add a second variation with a different headline."
+  exit 1
+fi
+
+# 3. Metric exists.
+METRIC=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/metrics/${LD_PROJECT_KEY}/product-click" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$METRIC" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **product-click** metric hasn't been created yet. Follow the **Create a metric** steps in the lab."
+  exit 1
+fi
+
+# 4. Code: hero_headline added to features endpoint.
+if ! grep -q '"hero_headline"' /opt/ld/ai-configs-intro/app/server.py; then
+  fail-message "The \`hero_headline\` line hasn't been added to the features endpoint in \`server.py\`. Follow the **Wire it into the app** steps."
+  exit 1
+fi
+
+# 5. Code: event tracking wired in /api/track.
+if ! grep -q 'ld_client.track(' /opt/ld/ai-configs-intro/app/server.py; then
+  fail-message "The event tracking code hasn't been added to \`server.py\`. Find the **CodeControl Challenge 04 paste block** and replace it with the code from the lab."
+  exit 1
+fi
+
 exit 0

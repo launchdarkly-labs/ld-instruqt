@@ -1,2 +1,40 @@
 #!/bin/sh
+
+# 1. Flag exists.
+FLAG=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/new-product-layout" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$FLAG" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **new-product-layout** flag hasn't been created yet. Follow the **Create the flag** steps in the lab."
+  exit 1
+fi
+
+# 2. Flag is on in production.
+FLAG_ON=$(echo "$FLAG" | jq -r '.environments.production.on // false')
+if [ "$FLAG_ON" != "true" ]; then
+  fail-message "The **new-product-layout** flag is off in the **production** environment. Open the flag's Targeting tab and toggle it on."
+  exit 1
+fi
+
+# 3. A percentage rollout is configured (not a fixed variation).
+ROLLOUT=$(echo "$FLAG" | jq '.environments.production.fallthrough.rollout // empty')
+if [ -z "$ROLLOUT" ]; then
+  fail-message "The **new-product-layout** flag isn't using a percentage rollout. Under **Default rule**, switch from a fixed variation to a **percentage rollout**."
+  exit 1
+fi
+
+# 4. Rollout has been set above 0%.
+TRUE_WEIGHT=$(echo "$FLAG" | jq '.environments.production.fallthrough.rollout.variations[0].weight // 0')
+if [ "$TRUE_WEIGHT" = "0" ]; then
+  fail-message "Your rollout is at 0% — no one is seeing the new layout yet. Increase the rollout percentage and try again."
+  exit 1
+fi
+
+# 5. Code added to server.py.
+if ! grep -q '"new_layout_enabled"' /opt/ld/ai-configs-intro/app/server.py; then
+  fail-message "The \`new_layout_enabled\` line hasn't been added to \`server.py\` yet. Follow the **Wire it into the app** steps in the lab."
+  exit 1
+fi
+
 exit 0

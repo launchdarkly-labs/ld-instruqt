@@ -107,11 +107,22 @@ def healthz():
 def api_features(session_id: str, user_tier: str = "free"):
     # ─────────────────────────────────────────────────────────────────────
     # CodeControl Challenge 01 paste block — replace this stub with flag evaluation.
-    # The lab instructions tell you exactly what to put between these markers.
-    # Until you do, the New Arrivals section stays hidden.
+    # The lab instructions tell you exactly what to put between these
+    # markers. Until you do, the storefront shows no feature flag sections.
     # ─────────────────────────────────────────────────────────────────────
     return {"new_arrivals_enabled": False}
     # ─── End CodeControl Challenge 01 paste block ─────────────────────────
+
+
+@app.post("/api/track")
+def api_track(session_id: str, event_key: str):
+    # ─────────────────────────────────────────────────────────────────────
+    # CodeControl Challenge 04 paste block — replace this stub with event tracking.
+    # The lab instructions tell you exactly what to put between these
+    # markers. Until you do, click events are silently dropped.
+    # ─────────────────────────────────────────────────────────────────────
+    return {"ok": True}
+    # ─── End CodeControl Challenge 04 paste block ─────────────────────────
 
 
 @app.post("/chat", response_model=ChatResponse)

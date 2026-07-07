@@ -227,6 +227,45 @@ a { color: inherit; }
   font-size: 0.875rem;
 }
 
+/* ---------- Sort bar (progressive rollout feature) ---------- */
+
+.sort-bar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sort-bar-label {
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.sort-bar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-bar-tag {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.sort-bar-count {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
 /* ---------- Premium Members banner ---------- */
 
 .premium-banner {
@@ -465,6 +504,13 @@ aside.otto {
   color: rgba(245, 245, 242, 0.45);
   text-align: right;
 }
+
+/* ---------- Layout bug (activated by Ch05 kill-switch challenge) ---------- */
+
+.layout-bug .product-grid { transform: skewY(-3deg); }
+.layout-bug .product { background: #ff0040 !important; color: #fff !important; border: 3px dashed #ff0 !important; }
+.layout-bug .product-image { filter: hue-rotate(180deg) saturate(3); opacity: 0.6; }
+.layout-bug .hero h1 { color: #ff0040; }
 
 /* ---------- Small screens ---------- */
 

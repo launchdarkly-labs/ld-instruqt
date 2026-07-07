@@ -1,2 +1,19 @@
 #!/bin/sh
+
+# The learner's task is to turn the new-product-layout flag OFF.
+FLAG=$(curl -s -X GET \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/new-product-layout" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}")
+
+if [ "$(echo "$FLAG" | jq -r '.key // "null"')" = "null" ]; then
+  fail-message "The **new-product-layout** flag doesn't exist. Something went wrong with a previous challenge — ask your instructor for help."
+  exit 1
+fi
+
+FLAG_ON=$(echo "$FLAG" | jq -r '.environments.production.on // false')
+if [ "$FLAG_ON" != "false" ]; then
+  fail-message "The **new-product-layout** flag is still **on**. Open the flag's Targeting tab in the **production** environment and toggle it **Off**. Then click **Review and save** → **Save changes**."
+  exit 1
+fi
+
 exit 0

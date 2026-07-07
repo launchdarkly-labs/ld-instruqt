@@ -79,9 +79,25 @@ async function fetchFeatures() {
     const flags = await res.json();
     document.getElementById('new-arrivals').hidden = !flags.new_arrivals_enabled;
     document.getElementById('premium-banner').hidden = !flags.premium_banner_enabled;
+    const sortBar = document.getElementById('sort-bar');
+    sortBar.hidden = !flags.new_layout_enabled;
+    if (flags.new_layout_enabled) {
+      document.getElementById('product-count').textContent = `${PRODUCTS.length} items`;
+    }
+    if (flags.hero_headline) {
+      document.getElementById('hero-headline').textContent = flags.hero_headline;
+    }
   } catch (_) {
     // non-fatal — storefront still works without flag data
   }
+}
+
+// ---------- Event tracking ----------
+
+function trackClick(eventKey) {
+  fetch(`/api/track?session_id=${encodeURIComponent(getSessionId())}&event_key=${encodeURIComponent(eventKey)}`, {
+    method: 'POST'
+  }).catch(() => {});
 }
 
 // ---------- Otto widget ----------
@@ -187,4 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initChatForm();
   fetchFeatures();
   appendBubble('system', "Hi — I'm Otto. Ask me anything about ToggleWear.");
+  document.getElementById('shop').addEventListener('click', (e) => {
+    if (e.target.closest('.product')) trackClick('product-click');
+  });
 });

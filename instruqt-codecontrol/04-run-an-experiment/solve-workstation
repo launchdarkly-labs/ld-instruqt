@@ -1,2 +1,36 @@
 #!/bin/sh
+
+set -e
+
+cd /opt/ld/ai-configs-intro/terraform/codecontrol-04
+echo "project_key = \"${LD_PROJECT_KEY}\"" > terraform.tfvars
+terraform init -input=false
+terraform apply -auto-approve
+
+python3 /opt/ld/ai-configs-intro/terraform/codecontrol-04/patch-server.py
+
+# Create the product-click metric via API (ignore 409 if it already exists).
+curl -s -o /dev/null -w '' -X POST \
+  "https://app.launchdarkly.com/api/v2/metrics/${LD_PROJECT_KEY}" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "key": "product-click",
+    "name": "Product Click",
+    "kind": "custom",
+    "eventKey": "product-click",
+    "isNumeric": false,
+    "successCriteria": "HigherThanBaseline",
+    "randomizationUnits": ["user"]
+  }' || true
+
+# Turn the flag on in production.
+curl -fsS -X PATCH \
+  "https://app.launchdarkly.com/api/v2/flags/${LD_PROJECT_KEY}/hero-headline" \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" \
+  -H "Content-Type: application/json; domain-model=launchdarkly.semanticpatch" \
+  --data "{\"environmentKey\":\"production\",\"instructions\":[{\"kind\":\"turnFlagOn\"}]}"
+
+service togglewear restart
+
 exit 0

@@ -29,7 +29,7 @@
 
 <main>
   <section class="hero">
-    <h1>Wear your features on your sleeve.</h1>
+    <h1 id="hero-headline">Wear your features on your sleeve.</h1>
     <p class="hero-sub">LaunchDarkly-branded apparel for people who ship.</p>
   </section>
 
@@ -52,6 +52,14 @@
       </div>
     </div>
   </section>
+
+  <div id="sort-bar" class="sort-bar" hidden>
+    <span class="sort-bar-label">All Products</span>
+    <div class="sort-bar-controls">
+      <span class="sort-bar-tag">New Layout</span>
+      <span class="sort-bar-count" id="product-count"></span>
+    </div>
+  </div>
 
   <section id="shop" class="product-grid" aria-label="Products"></section>
 </main>
