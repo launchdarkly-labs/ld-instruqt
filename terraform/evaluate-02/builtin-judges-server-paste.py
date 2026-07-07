@@ -72,6 +72,17 @@
                         {"role": m.role, "content": [{"text": m.content}]}
                         for m in (_jc_sdk.messages or []) if m.role != "system"
                     ]
+                    if not _msgs:
+                        # Built-in judge templates typically contain only a
+                        # system prompt with {response} already interpolated.
+                        # Bedrock's Converse API rejects an empty messages
+                        # list -- it requires at least one user turn.
+                        _msgs = [{
+                            "role": "user",
+                            "content": [{
+                                "text": "Provide your score as a single number between 0.0 and 1.0.",
+                            }],
+                        }]
                     _raw_model = _jc_sdk.model.name
                     try:
                         _model_id = resolve_bedrock_model(_raw_model)
