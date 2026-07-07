@@ -76,7 +76,22 @@ The app ships with stubbed endpoints (paste-block markers in `server.py`). This 
 - Run the challenge solve scripts, or
 - Paste the completed code blocks from the assignment instructions into `server.py`
 
-## CodeControl track challenges
+## Track challenges
+
+### Build (AgentControl)
+
+| # | Challenge | What it covers |
+|---|-----------|----------------|
+| 00 | Welcome to ToggleWear | Orientation and app overview |
+| 01 | Otto is Born | Create Otto's first AI Config |
+| 02 | Give Otto a Personality | Add prompt snippets and personality |
+| 03 | Otto On-Brand at Scale | Brand-voice at scale with variations |
+| 04 | Quiz — Configs and Snippets | Knowledge check |
+| 05 | Otto for Everyone | Targeting and rollout |
+| 06 | How is Otto Doing? | Monitoring and metrics |
+| 07 | Wrap-Up | Summary and next steps |
+
+### CodeControl
 
 | # | Challenge | What it covers |
 |---|-----------|----------------|
@@ -86,8 +101,23 @@ The app ships with stubbed endpoints (paste-block markers in `server.py`). This 
 | 03 | Progressive Rollout | Percentage-based rollout (0% → 50% → 100%) |
 | 04 | Run an Experiment | String flag A/B test, metrics, experimentation |
 | 05 | The Kill Switch | Turn off a broken feature instantly |
-| 06 | Quiz | Knowledge check |
-| 07 | Wrap Up | Summary and next steps |
+| 06 | Quiz — CodeControl | Knowledge check |
+| 07 | Wrap-Up | Summary and next steps |
+
+### Evaluate
+
+| # | Challenge | What it covers |
+|---|-----------|----------------|
+| 00 | Welcome to Evaluate | Orientation |
+| 01 | Otto on the Bench | Baseline evaluation setup |
+| 02 | Quick Takes from a Built-in Judge | Built-in judge integration |
+| 03 | Otto Sounds Like Otto | Brand-voice custom judge |
+| 04 | Otto Checks His Facts | Product-claim fact-checking judge |
+| 05 | Quiz — Judging Otto | Knowledge check |
+| 06 | A vs. B | Prompt experiment with A/B comparison |
+| 07 | Trust But Verify | Guarded rollout |
+| 08 | Otto Knows When to Fold | Adaptive switching |
+| 09 | Wrap-Up | Summary and next steps |
 
 ## Upstream
 
