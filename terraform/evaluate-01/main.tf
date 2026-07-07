@@ -36,6 +36,7 @@ locals {
   dataset_sha256 = sha256(local.dataset_bytes)
 
   api_base = "https://app.launchdarkly.com/api/v2"
+  int_base = "https://app.launchdarkly.com/internal"
 }
 
 resource "null_resource" "create_dataset" {
@@ -47,24 +48,30 @@ resource "null_resource" "create_dataset" {
     command = <<-EOT
       set -e
 
+      ACCOUNT_ID=$(curl -s -X GET '${local.api_base}/account' \
+          -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" | jq -r '._id')
+      MEMBER_EMAIL='instruqt%2B${var.project_key}@launchdarkly.com'
+      MEMBER_ID=$(curl -s -X GET '${local.api_base}/members?filter=email:$MEMBER_EMAIL' \
+          -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" | jq -r '.items[0]._id')
+      LD_PROJECT_ID=$(curl -s -X GET '${local.api_base}/projects/$LD_PROJECT_KEY' \
+          -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" | jq -r '._id')
+
       CREATE_RESPONSE=$(curl -fsS -X POST \
-        '${local.api_base}/projects/${var.project_key}/datasets' \
-        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
+        '${local.int_base}/projects/${var.project_key}/datasets' \
         -H 'Content-Type: application/json' \
+        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
+        -H "X-Ld-Accountid: $ACCOUNT_ID" \
+        -H "X-Ld-Mbrid: $MEMBER_ID" \
+        -H "X-Ld-Prjid: $LD_PROJECT_ID" \
         -H 'LD-API-Version: beta' \
         --data-raw '{
           "filename": "${local.dataset_filename}",
           "format": "${local.dataset_format}",
-          "size": ${local.dataset_size},
-          "checksum": "${local.dataset_sha256}"
+          "size_bytes": ${local.dataset_size},
+          "name": "${local.evaluation_name}"
         }')
 
-      UPLOAD_URL=$(echo "$CREATE_RESPONSE" | jq -r '.uploadUrl // .upload_url // empty')
-      if [ -z "$UPLOAD_URL" ]; then
-        echo "create-dataset did not return an uploadUrl. Response was:"
-        echo "$CREATE_RESPONSE"
-        exit 1
-      fi
+      UPLOAD_URL=$(echo "$CREATE_RESPONSE" | jq -r '.upload.uploadUrl')
 
       curl -fsS -X PUT "$UPLOAD_URL" \
         -H 'Content-Type: application/x-ndjson' \

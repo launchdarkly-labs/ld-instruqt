@@ -4,9 +4,9 @@
 for snip in brand-voice safety-rules; do
   STATUS=$(curl -s -o /dev/null -w '%{http_code}' \
     "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/prompt-snippets/${snip}" \
-    -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}" | sed 's/\\/\\\\/g')
+    -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" | sed 's/\\/\\\\/g')
   if [ "$STATUS" != "200" ]; then
-    fail-message "The **${snip}** snippet doesn't exist yet. Create it from the AI Configs → Snippets page."
+    fail-message "The **${snip}** snippet doesn't exist yet. Create it from the Library → Snippets page."
     exit 1
   fi
 done
@@ -14,7 +14,7 @@ done
 # 2. otto-born's system message references both snippets.
 PROMPT=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/variations/otto-born" \
-  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}" | sed 's/\\/\\\\/g' \
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" | sed 's/\\/\\\\/g' \
   | jq -r '.items[0].messages[]? | select(.role=="system") | .content')
 
 # The canonical snippet-reference syntax is `{{snippet.<key>#<version>}}`,

@@ -53,7 +53,10 @@ Otto (Premium)
 ```text
 otto-premium
 ```
-4. Under **Model**, pick **Bedrock** → **anthropic.claude-sonnet-4-6**.
+4. Click **Select model**, **search** for and select
+```
+anthropic.claude-sonnet-4-6
+```
 5. In prompt text area, make sure **System** is selected and clear the prompt.
 6. Click **Load snippet** and select **Brand voice**.
 7. On the next line, enter the following text:
@@ -92,7 +95,7 @@ Otto should be brief and friendly — that's the Haiku-backed Born variation.
 
 2. Close the chat. At the top right of the page, change the dropdown to **Premium user**.
 
-3. Re-open the chat (or refresh the page) and ask the same question. Otto should answer at more length, mention complementary items, and feel a bit warmer — that's the Sonnet-backed Premium variation, served because the LaunchDarkly context now has `tier: "premium"` and the rule you just added matches it.
+3. Re-open and reset the chat and ask the same question. Otto should answer at more length, mention complementary items, and feel a bit warmer — that's the Sonnet-backed Premium variation, served because the LaunchDarkly context now has `tier: "premium"` and the rule you just added matches it.
 
 The app's code didn't change. The variation you served changed because LaunchDarkly evaluated the targeting rule against the context.
 

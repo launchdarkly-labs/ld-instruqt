@@ -20,6 +20,7 @@ set -euo pipefail
 REPO_URL="https://github.com/launchdarkly-labs/ld-instruqt-ai-configs-intro.git"
 REPO_REF="main"
 TERRAFORM_VERSION="1.15.2"
+NODE_VERSION="26.x"
 # ---------------------------------------------------------------------------
 
 say() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
@@ -36,7 +37,15 @@ apt-get -y install \
     software-properties-common \
     unzip jq git curl wget gnupg ca-certificates lsb-release vim \
     build-essential \
-    python3 python3-venv python3-dev
+    python3 python3-venv python3-dev python3-pip
+
+say "Installing Node.js ${NODE_VERSION} (via NodeSource)"
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION} nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+apt -y update
+apt install -y nodejs
+npm install -g npm@latest
 
 say "Installing terraform ${TERRAFORM_VERSION} (direct binary; HashiCorp's apt repo has gaps on noble)"
 TF_ARCH="$(dpkg --print-architecture)"
@@ -81,12 +90,33 @@ RestartSec=1
 User=root
 WorkingDirectory=/opt/ld/ai-configs-intro/app
 EnvironmentFile=/opt/ld/ai-configs-intro/app/.env
-ExecStart=/opt/ld/ai-configs-intro/app/.venv/bin/uvicorn server:app --host 0.0.0.0 --port 3000
+ExecStart=/opt/ld/ai-configs-intro/app/.venv/bin/uvicorn server:app --host 0.0.0.0 --port 3000 --reload
 
 [Install]
 WantedBy=multi-user.target
 UNIT
 systemctl enable togglewear
+
+say "Installing Evaluator Tracker service"
+cat <<'UNIT' > /etc/systemd/system/evaluatortracker.service
+[Unit]
+Description=Evaluator Tracker
+After=togglewear.service
+Wants=togglewear.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+User=root
+WorkingDirectory=/opt/ld/ai-configs-intro/traffic-generator
+ExecStart=/opt/ld/ai-configs-intro/app/.venv/bin/python3 /opt/ld/ai-configs-intro/traffic-generator/realchat_traffic.py
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+systemctl enable evaluatortracker
 
 say "Installing code-server (:8080)"
 mkdir -p /root/.local/share/code-server/User

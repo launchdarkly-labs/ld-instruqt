@@ -6,10 +6,10 @@
 
 resource "launchdarkly_model_config" "haiku" {
   project_key    = var.project_key
-  key            = "Anthropic.claude-haiku-4-5"
-  name           = "Anthropic Claude Haiku 4.5"
-  model_id       = "claude-haiku-4-5"
-  model_provider = "anthropic"
+  key            = "Bedrock.anthropic.claude-haiku-4-5-20251001-v1_0"
+  name           = "anthropic.claude-haiku-4-5-20251001-v1:0"
+  model_id       = "anthropic.claude-haiku-4-5-20251001-v1:0"
+  model_provider = "Bedrock"
   params         = jsonencode({ temperature = 0.7, maxTokens = 512 })
   tags           = ["instruqt"]
 }
@@ -20,7 +20,7 @@ resource "launchdarkly_ai_config" "otto" {
   name        = "Otto Assistant"
   description = "ToggleWear's customer-facing shopping assistant."
   mode        = "completion"
-  tags        = ["instruqt", "ai-configs-intro"]
+  tags        = ["instruqt", "agentcontrol-intro"]
 }
 
 resource "launchdarkly_ai_config_variation" "otto_born" {

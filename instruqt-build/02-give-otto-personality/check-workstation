@@ -3,7 +3,7 @@
 # Fetch the otto-born variation's current messages.
 VARIATION=$(curl -s -X GET \
   "https://app.launchdarkly.com/api/v2/projects/${LD_PROJECT_KEY}/ai-configs/otto-assistant/variations/otto-born" \
-  -H "Authorization: ${LAUNCHDARKLY_AG_API_TOKEN}" | sed 's/\\/\\\\/g')
+  -H "Authorization: ${LAUNCHDARKLY_ACCESS_TOKEN}" | sed 's/\\/\\\\/g')
 
 SYSTEM_PROMPT=$(echo "$VARIATION" | sed 's/\\/\\\\/g' | jq -r '.items[0].messages[]? | select(.role=="system") | .content')
 

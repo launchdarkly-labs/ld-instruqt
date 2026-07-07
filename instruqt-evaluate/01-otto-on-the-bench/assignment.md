@@ -38,56 +38,69 @@ Otto is in his post-Build form — born, given personality, refactored on-brand,
 
 Before we look at production behavior (next challenge, with built-in judges), we'll grade Otto **offline**. Offline evaluation runs a curated dataset of customer questions through Otto and tells you how often he answers well, where he's weak, and where he drifts off-brand — without sending real traffic.
 
-A 30-question dataset is already in your project. Your job is to point an evaluation at it, set the grading rubric, and read what comes back.
-
-# Inspect the dataset
-
-Open the [LaunchDarkly](#tab-0) tab.
-
-1. From the left-hand navigation, click **Datasets**.
-2. Find **customer-questions.jsonl** and click it.
-3. The detail page shows 30 rows. Click through a few to see the shape: each row has an `input` (the customer question), an `expected_output` (a rubric describing what a good answer looks like), and a `metadata` object tagging the question's category and difficulty.
-
-The dataset deliberately mixes easy product questions ("Got any t-shirts?") with hard ones — off-topic queries, ambiguous requests, even a prompt-injection attempt — so the results tell a story rather than a flat all-pass.
+A 30-question dataset is already in your project. Your job is to point an evaluation at it, set the grading rubric, and read what comes back. The dataset deliberately mixes easy product questions ("Got any t-shirts?") with hard ones — off-topic queries, ambiguous requests, even a prompt-injection attempt — so the results tell a story rather than a flat all-pass. Datasets can be found in **Library** --> **Datasets**. You'll be able to explore the data in the playground, which we'll create next.
 
 # Create the evaluation
 
-1. Click **Evaluations** in the left navigation.
-2. Click **Create evaluation**.
-3. For **Name**, enter:
+1. From the left-hand navigation, where you see the **Code | Agents** selector, click **Agents**
+1. Click **Playgrounds** in the left navigation.
+2. Click **New playground**.
+3. Click **Untitled Playground** at the top and enter:
 ```text
 Otto Born baseline
 ```
-4. For **Dataset**, select **customer-questions.jsonl**.
-5. For **Config**, select **Otto Assistant**.
-6. For **Variations**, select **Otto (Born)**. (Only the Born variation — we want to know how the cheap default Otto performs before we touch anything.)
-7. Click **Next** to move to the acceptance criteria step.
+
+# Side **A**
+
+1. Click the ![Load Config](../assets/otto-load-config.png) icon to load from a config.
+2. Click **Otto Assistant** on the left, and on the right, select the **Otto (Born)** variation.
+3. Click **Load config**.
+4. From the list of models, search for and select:
+```text
+claude-haiku-4-5-20251001
+```
+5. Below the loaded prompt textarea, click **Add message**.
+6. In the new prompt textarea, enter:
+```text
+{{input}}
+```
+7. Click **Save**
+
+# Side **B**
+
+1. Click the ![Load Config](../assets/otto-load-config.png) icon to load from a config.
+2. Click **Otto Assistant** on the left, and on the right, select the **Otto (Premium)** variation.
+3. Click **Load config**.
+4. From the list of models, search for and select:
+```text
+claude-sonnet-4-6
+```
+5. Below the loaded prompt textarea, click **Add message**.
+6. In the new prompt textarea, enter:
+```text
+{{input}}
+```
+7. Click **Save**
+
+# Select Dataset
+
+1. At the bottom of the screen, grab and drag the dark gray bar up so you can see the controls.
+2. Click **Select a dataset to evaluate**, and select **Otto Born baseline**.
+3. To the right of the selector, click **Random**, and for **Rows**, enter **15**.
 
 # Configure acceptance criteria
 
-The evaluation needs to know how to grade Otto's responses against each row's `expected_output`. You'll set up a single LLM-as-a-judge criterion: a small grading prompt that compares Otto's actual answer to the expected rubric and returns a numeric score.
+The evaluation needs to know how to grade Otto's responses against each row's `expected_output`. You'll set up one criteria: a grader that checks for relevancy.
 
-1. In the **Acceptance criteria** panel, click **Add criterion**.
-2. Choose **LLM-as-a-judge** as the criterion type.
-3. For **Criterion name**, enter:
-```text
-Matches expected output
-```
-4. For the **Judge prompt**, enter:
-```text
-Evaluate whether the response satisfies the expected output criteria.
+**Note**: If the right-hand pane is still collapsed, press `]` to open it.
 
-Expected: {{expected_output}}
-Response: {{response}}
-
-Score 1.0 if the response clearly meets the criteria, 0.0 if it clearly doesn't, 0.5 if partial. Respond with only a number.
-```
-5. Click **Save**.
+1. In the **Acceptance criteria** panel on the right, click **Add criteria** and select **Answer Relevancy**.
+2. Leave the defaults as-is.
 
 # Run the evaluation
 
-1. Click **Run evaluation**.
-2. The run takes roughly a minute — Otto answers each of the 30 questions and the judge grades each answer.
+1. At the top right, click **Run all**.
+2. The run takes roughly a minute — Otto answers each of the 10 questions and the judge grades each answer.
 
 # Read the results
 

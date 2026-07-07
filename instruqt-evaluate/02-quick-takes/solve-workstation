@@ -1,13 +1,18 @@
 #!/bin/sh
 
 # Attaches the three built-in judges (Accuracy, Relevance, Toxicity) to
-# otto-born at 25% sampling each. Also ensures the realchat traffic
-# generator is running so the monitoring view populates.
+# otto-born at 25% sampling each, patches server.py with the explicit
+# built-in-judge invocation block, and ensures realchat traffic is
+# running so the monitoring view populates.
 
 set -e
 
 cd /opt/ld/ai-configs-intro/terraform/evaluate-02
 terraform apply -auto-approve
+
+python3 /opt/ld/ai-configs-intro/terraform/evaluate-02/patch-server.py
+service togglewear stop
+service togglewear start
 
 # Start (or restart) the background traffic if it isn't already up.
 if ! pgrep -f realchat_traffic.py > /dev/null; then

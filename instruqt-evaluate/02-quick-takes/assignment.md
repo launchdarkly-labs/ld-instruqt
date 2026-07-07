@@ -50,10 +50,10 @@ A low-rate stream of chat traffic is already flowing in the background, so by th
 Open the [LaunchDarkly](#tab-0) tab.
 
 1. Go to **Configs** → **Otto Assistant** → **Otto (Born)**.
-2. Scroll to the **Judges** section and click **Attach judges**.
-3. Select all three built-ins: **Accuracy**, **Relevance**, and **Toxicity**.
+2. Scroll to below the prompt section and click **+ Add judges**.
+3. Select all three built-ins: **Accuracy**, **Relevance**, and **Toxicity**, then click **Add 3 judges**.
 4. Set the sampling rate for each to **25%**.
-5. Click **Save**.
+5. Click **Review and save**, then **Save changes**.
 
 # Watch the scores
 

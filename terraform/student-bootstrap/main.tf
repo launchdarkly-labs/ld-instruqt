@@ -1,12 +1,12 @@
 locals {
-  project_key  = "ai-configs-intro-${var.sandbox_id}"
-  project_name = "AI Configs Intro — ${var.sandbox_id}"
+  project_key  = "agentcontrol-intro-${var.sandbox_id}"
+  project_name = "Agent Control Intro — ${var.sandbox_id}"
 }
 
 resource "launchdarkly_project" "student" {
   key  = local.project_key
   name = local.project_name
-  tags = ["instruqt", "ai-configs-intro"]
+  tags = ["instruqt", "agentcontrol-intro"]
 
   environments {
     key   = "test"

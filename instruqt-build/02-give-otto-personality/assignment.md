@@ -43,18 +43,19 @@ Open the [LaunchDarkly](#tab-0) tab.
 
 1. From the left-hand navigation, click **Configs**.
 2. Click **Otto Assistant** to open the config.
+3. If you're still on the **Targeting** tab, click on **Variations** in the top navigation.
 3. Expand the **Otto (Born)** variation to edit it.
 4. In the prompt text area, make sure **System** is selected, and replace its content with:
 
 ```text
-You are Otto, the shopping assistant at ToggleWear — an online shop for LaunchDarkly-branded apparel. You're warm, helpful, and a little playful. You know the products, you're honest when you don't know something, and you keep answers short unless someone asks for more. Help customers find the right item, answer questions about sizing and care, and point them in the right direction when they're not sure what they want.
+You are Otto, the shopping assistant at ToggleWear -- an online shop for LaunchDarkly-branded apparel. You're warm, helpful, and a little playful. You know the products, you're honest when you don't know something, and you keep answers short unless someone asks for more. Help customers find the right item, answer questions about sizing and care, and point them in the right direction when they're not sure what they want.
 ```
 
 5. Click **Review and save**, then **Save changes**.
 
 # Try the new Otto
 
-Open the [ToggleWear](#tab-1) tab. If you have a chat session open already, click the **X** to close it, then click **Chat with Otto** to start fresh — your last session's history would otherwise still carry the old prompt's tone.
+Open the [ToggleWear](#tab-1) tab. If you have a chat session open already, click the reset icon next to the **X** to start fresh — your last session's history would otherwise still carry the old prompt's tone.
 
 Ask Otto something the marketing team would care about:
 

@@ -44,6 +44,7 @@ resource "launchdarkly_ai_config" "brand_voice_judge" {
   project_key = var.project_key
   key         = "otto-brand-voice-judge"
   name        = "Otto Brand Voice Judge"
+  evaluation_metric_key = "$ld:ai:judge:otto-brand-voice-judge"
   description = "Scores Otto's responses 0.0-1.0 for adherence to the brand-voice snippet. Drives otto-brand-voice-score; Evaluate ch07's guarded rollout watches this."
   mode        = "judge"
   tags        = ["instruqt", "ai-configs-intro"]
@@ -54,7 +55,7 @@ resource "launchdarkly_ai_config_variation" "brand_voice_judge_default" {
   config_key       = launchdarkly_ai_config.brand_voice_judge.key
   key              = "default"
   name             = "Default"
-  model_config_key = "Anthropic.claude-haiku-4-5"
+  model_config_key = "Bedrock.anthropic.claude-haiku-4-5-20251001-v1:0"
 
   messages {
     role    = "system"
@@ -102,20 +103,21 @@ resource "launchdarkly_metric" "brand_voice_score" {
 # it from here without `terraform import`. PATCH the evaluationMetricKey
 # directly via REST.
 
-resource "null_resource" "wire_evaluation_metric" {
-  depends_on = [launchdarkly_metric.brand_voice_score]
+# resource "null_resource" "wire_evaluation_metric" {
+#   depends_on = [launchdarkly_metric.brand_voice_score,
+#                 launchdarkly_ai_config.brand_voice_judge]
 
-  triggers = {
-    metric_key = launchdarkly_metric.brand_voice_score.key
-  }
+#   triggers = {
+#     metric_key = launchdarkly_metric.brand_voice_score.key
+#   }
 
-  provisioner "local-exec" {
-    command = <<-EOT
-      curl -fsS -X PATCH \
-        'https://app.launchdarkly.com/api/v2/projects/${var.project_key}/ai-configs/otto-assistant' \
-        -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
-        -H 'Content-Type: application/json' \
-        --data-raw '{"evaluationMetricKey":"otto-brand-voice-score"}'
-    EOT
-  }
-}
+#   provisioner "local-exec" {
+#     command = <<-EOT
+#       curl -fsS -X PATCH \
+#         'https://app.launchdarkly.com/api/v2/projects/${var.project_key}/ai-configs/otto-brand-voice-judge' \
+#         -H "Authorization: $LAUNCHDARKLY_ACCESS_TOKEN" \
+#         -H 'Content-Type: application/json' \
+#         --data-raw '{"evaluationMetricKey":"otto-brand-voice-score"}'
+#     EOT
+#   }
+# }

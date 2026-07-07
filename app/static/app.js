@@ -128,6 +128,7 @@ function initOttoPanel() {
   const toggle = document.getElementById('otto-toggle');
   const panel = document.getElementById('otto-panel');
   const close = document.getElementById('otto-close');
+  const reset = document.getElementById('otto-reset');
   const input = document.getElementById('otto-input');
 
   const open = () => {
@@ -144,6 +145,31 @@ function initOttoPanel() {
 
   toggle.addEventListener('click', open);
   close.addEventListener('click', shut);
+  reset.addEventListener('click', resetChat);
+}
+
+async function resetChat() {
+  const reset = document.getElementById('otto-reset');
+  reset.disabled = true;
+  try {
+    const res = await fetch('/chat/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: getSessionId() }),
+    });
+    if (!res.ok) {
+      appendBubble('system', `Reset failed (${res.status}).`);
+      return;
+    }
+    transcript().innerHTML = '';
+    setMeta('');
+    appendBubble('system', "Chat reset. Ask me anything about ToggleWear.");
+    document.getElementById('otto-input').focus();
+  } catch (err) {
+    appendBubble('system', `Reset error: ${err.message}`);
+  } finally {
+    reset.disabled = false;
+  }
 }
 
 async function sendMessage(message) {

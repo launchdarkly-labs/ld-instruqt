@@ -65,7 +65,7 @@ otto-assistant
 
 The Config exists but has no variations yet — nothing to serve. Add the "born" variation.
 
-1. You now on the Config detail page, adding the first variation.
+1. You are now on the Config detail page, adding the first variation.
 2. For **Name**, enter:
 ```text
 Otto (Born)
@@ -74,7 +74,10 @@ Otto (Born)
 ```text
 otto-born
 ```
-4. Under **Model**, pick **Bedrock** --> **anthropic.claude-haiku-4-5-20251001-v1:0** from the list.
+4. Under **Select model**, In the search box, enter and select:
+```text
+anthropic.claude-haiku-4-5-20251001-v1:0
+```
 5. In the prompt text area, select **System**, and add this content in the prompt:
 ```text
 You are a customer service assistant for ToggleWear, an online retailer. Answer questions from customers about products and store policies. Be accurate and concise.
@@ -166,6 +169,18 @@ Save the file (⌘ + S/Ctrl + S). The ToggleWear service auto-reloads.
 
 Read through the block of code to note how the LaunchDarkly AI SDK gets the model
 configuration, then passes that on to the Bedrock SDK.
+
+Earlier in the code, at line 41, you'll see the AgentControl client SDK instantiation:
+```python
+ai_client = LDAIClient(ld_client)
+```
+
+In the code you just pasted, look at line ~147, and you'll see where we get the config from AgentControl.
+```python
+cfg = ai_client.completion_config(OTTO_CONFIG_KEY, context, FALLBACK_CONFIG)
+```
+
+The next lines that follow validate the config, then continue on to setup the message structure. And around line 177, the AgentControl config attributes are used in the `bedrock.converse` method call.
 
 # Say hi to Otto
 
