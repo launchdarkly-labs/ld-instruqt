@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ToggleWear — Wear your features on your sleeve.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -29,8 +32,12 @@
 
 <main>
   <section class="hero">
-    <h1 id="hero-headline">Wear your features on your sleeve.</h1>
-    <p class="hero-sub">LaunchDarkly-branded apparel for people who ship.</p>
+    <div class="hero-content">
+      <span class="hero-eyebrow">ToggleWear Co.</span>
+      <h1 id="hero-headline">Wear your features on your sleeve.</h1>
+      <p class="hero-sub">LaunchDarkly-branded apparel for people who ship.</p>
+      <a href="#shop" class="hero-cta">Shop the collection</a>
+    </div>
   </section>
 
   <section id="new-arrivals" class="new-arrivals" hidden aria-label="New Arrivals">
@@ -92,7 +99,14 @@
 </aside>
 
 <footer class="site-footer">
-  <small>&copy; ToggleWear. A fictional shop for a real LaunchDarkly workshop.</small>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true">◐</span>
+      <span>ToggleWear</span>
+    </div>
+    <p>A fictional shop for a real LaunchDarkly workshop.</p>
+    <small>&copy; 2026 ToggleWear Co. All features are toggleable.</small>
+  </div>
 </footer>
 
 <script src="/static/app.js" defer></script>
