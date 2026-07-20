@@ -1,4 +1,4 @@
-# LaunchDarkly Instruqt Workshop — AI Configs (AgentControl)
+# LaunchDarkly Instruqt Workshop
 
 Hands-on Instruqt tracks teaching LaunchDarkly's **AgentControl** product through guided labs. Learners build, evaluate, and coordinate an AI shopping assistant ("Otto") for a fictional e-commerce brand called **ToggleWear**.
 
