@@ -1,24 +1,23 @@
 slug: ld-codecontrol-build
-id: balq92rzb7vj
+id: 2jtzcj9kqbbw
 title: Ship Features Safely with CodeControl
 teaser: Use feature flags, targeting, rollouts, and experimentation to ship confidently
   — and recover instantly when something goes wrong.
-description: CodeControl gives engineering teams runtime control over what's live in
-  production without redeploying. In this track you'll use the ToggleWear storefront
+description: CodeControl gives engineering teams runtime control over what's live
+  in production without redeploying. In this track you'll use the ToggleWear storefront
   to learn the full CodeControl toolkit — create your first feature flag, target it
-  by user tier, progressively roll it out, run an A/B experiment, and kill a bad
-  release in seconds. By the end, you'll have a repeatable pattern for every feature
-  you ship.
+  by user tier, progressively roll it out, run an A/B experiment, and kill a bad release
+  in seconds. By the end, you'll have a repeatable pattern for every feature you ship.
 icon: https://launchdarkly.com/favicon-dark-mode.png
 tags:
-- feature-flags
 - experimentation
 - progressive-rollout
 - codecontrol
+- feature-flags
 owner: launchdarkly
 developers:
-- kcochran@launchdarkly.com
 - mgarza@launchdarkly.com
+- kcochran@launchdarkly.com
 show_timer: true
 idle_timeout: 1200
 timelimit: 7200
@@ -34,5 +33,5 @@ lab_config:
   hideStopButton: false
   default_layout: AssignmentRight
   default_layout_sidebar_size: 25
-checksum: ""
+checksum: "14165356440027483762"
 enhanced_loading: false

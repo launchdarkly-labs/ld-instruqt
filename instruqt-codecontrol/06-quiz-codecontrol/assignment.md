@@ -1,6 +1,6 @@
 ---
 slug: quiz-codecontrol
-id: bn1nzqwrkriq
+id: dsexlcgdogxl
 type: quiz
 title: Quiz — CodeControl
 teaser: A quick check on flags, targeting, rollouts, and experiments.
@@ -13,7 +13,8 @@ answers:
 - Flags are evaluated at runtime on every request, so a targeting change in the UI
   takes effect immediately without redeploying.
 - The SDK polls the LaunchDarkly API every 60 seconds, so changes take up to a minute.
-- Flag targeting is client-side only — server-side SDKs always return the default variation.
+- Flag targeting is client-side only — server-side SDKs always return the default
+  variation.
 solution:
 - 1
 difficulty: ""

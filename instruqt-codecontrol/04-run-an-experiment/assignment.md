@@ -1,6 +1,6 @@
 ---
 slug: run-an-experiment
-id: 5bktj5rbsvqq
+id: 0aryqthrsefg
 type: challenge
 title: Run an Experiment
 teaser: A/B test two hero headlines. Let the data pick the winner.
@@ -11,16 +11,16 @@ notes:
     test on two versions of the ToggleWear hero headline, define a metric, let traffic
     flow, and promote the winner.
 tabs:
-- id: gd75c192qdag
+- id: g1xnaujwh800
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: bkxf98hup7u4
+- id: gjoqhw7tx2ct
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: e1zi9vky05al
+- id: a6dftbf0vwhb
   title: Code Editor
   type: service
   hostname: workstation

@@ -1,27 +1,27 @@
 ---
 slug: progressive-rollout
-id: 97rh41e1ue32
+id: sbdrdct1vvxy
 type: challenge
 title: Progressive Rollout
 teaser: Roll a new layout out to 0%, then 50%, then 100% — without redeploying.
 notes:
 - type: text
-  contents: Shipping to 100% of users at once is a gamble. A progressive rollout
-    lets you expose a feature to an increasing slice of your user base and pull back
-    the moment something looks wrong. LaunchDarkly uses the context key to bucket
-    users consistently — the same user always lands in the same bucket for the
-    duration of the rollout.
+  contents: Shipping to 100% of users at once is a gamble. A progressive rollout lets
+    you expose a feature to an increasing slice of your user base and pull back the
+    moment something looks wrong. LaunchDarkly uses the context key to bucket users
+    consistently — the same user always lands in the same bucket for the duration
+    of the rollout.
 tabs:
-- id: qaqsh8p8kd28
+- id: nwz6ndytqmsq
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: wbnk3t2xo7br
+- id: kprcoox5sahu
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: 0o42j00toos2
+- id: zaosvxwuspkt
   title: Code Editor
   type: service
   hostname: workstation

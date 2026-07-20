@@ -1,6 +1,6 @@
 ---
 slug: wrap-up
-id: h243x280iq9n
+id: poac54farope
 type: quiz
 title: Wrap-Up
 teaser: You shipped features safely. Now see how the same ideas apply to AI agents.
@@ -14,8 +14,8 @@ answers:
   completely different SDK and a separate dashboard.
 - AgentControl applies the same runtime-control ideas to AI agents — prompts, models,
   and rollout strategy become flags you control from the LaunchDarkly UI without redeploying.
-- AgentControl replaces feature flags for AI-powered applications. Once you adopt it,
-  you no longer need CodeControl.
+- AgentControl replaces feature flags for AI-powered applications. Once you adopt
+  it, you no longer need CodeControl.
 - AgentControl is only for Python applications using AWS Bedrock.
 solution:
 - 1

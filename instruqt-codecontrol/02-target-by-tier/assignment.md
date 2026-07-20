@@ -1,9 +1,10 @@
 ---
 slug: target-by-tier
-id: ckxhf2uxssi4
+id: cb0icnk258ol
 type: challenge
 title: Target by User Tier
-teaser: Create a segment for premium members and use it to show them something free users don't see.
+teaser: Create a segment for premium members and use it to show them something free
+  users don't see.
 notes:
 - type: text
   contents: A boolean flag that's on for everyone is useful. A flag that evaluates
@@ -11,16 +12,16 @@ notes:
     who a premium member is, then target a flag at that segment — so the same group
     can be reused across as many flags as you need.
 tabs:
-- id: prle2r134nll
+- id: nvgpnsrcixng
   title: LaunchDarkly
   type: browser
   hostname: launchdarkly
-- id: pbazehorh56d
+- id: ssfmb2b0pzfx
   title: ToggleWear
   type: service
   hostname: workstation
   port: 3000
-- id: mraku7bfcetz
+- id: ugkp1e6yoax2
   title: Code Editor
   type: service
   hostname: workstation

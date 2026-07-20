@@ -1,13 +1,16 @@
-# LaunchDarkly Instruqt Workshop — AI Configs (AgentControl)
+# LaunchDarkly Instruqt Workshop — AgentControl & CodeControl
 
-Hands-on Instruqt tracks teaching LaunchDarkly's **AgentControl** product through guided labs. Learners build, evaluate, and coordinate an AI shopping assistant ("Otto") for a fictional e-commerce brand called **ToggleWear**.
+Hands-on Instruqt tracks teaching LaunchDarkly's **AgentControl** and **CodeControl** products through guided labs. Learners use a fictional e-commerce storefront called **ToggleWear** to learn runtime control for both AI agents and traditional feature releases.
+
+- **AgentControl** tracks (Build, Evaluate, Coordinate) cover AI Configs, prompt management, judges, experiments, and multi-agent coordination through an AI shopping assistant named "Otto."
+- **CodeControl** covers feature flags, targeting, progressive rollouts, experimentation, and kill switches for shipping features safely.
 
 ## Tracks
 
 | Track | Directory | Description | Status |
 |-------|-----------|-------------|--------|
 | **Build** | `instruqt-build/` | Otto's lifecycle — from first Config to monitoring | Near-final |
-| **CodeControl** | `instruqt-codecontrol/` | Feature flags for AI — flags, targeting, rollouts, experiments, kill switch | In progress |
+| **CodeControl** | `instruqt-codecontrol/` | Feature flags, targeting, rollouts, experiments, kill switch | Live on Instruqt |
 | **Evaluate** | `instruqt-evaluate/` | Judges, experiments, guarded rollout, adaptive switching | In progress |
 | **Coordinate** | `instruqt-coordinate/` | Multi-agent Concierge team | Scaffolded |
 
